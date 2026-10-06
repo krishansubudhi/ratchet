@@ -25,6 +25,30 @@ ratchet check               # exit 0 = within budget, 1 = refused, 2 = setup err
 Then wire `ratchet check` into your agent (see [Integrations](#integrations)).
 `python -m ratchet` works too.
 
+## What it counts
+
+**Scope:** the one git repository you run it in (`git rev-parse
+--show-toplevel`). Other repos on the machine are never touched, and each
+repo gets its own `.ratchet.json`.
+
+**Which files:** git-tracked files, plus untracked files that aren't
+gitignored, whose extension is one of the code extensions present at
+`init` (`.py`, `.js`, `.ts`, `.go`, `.rs`, `.java`, `.rb`, `.c`, `.sh`, and
+more -- see `CODE_EXTS` in `ratchet/measure.py`). Blank lines don't count.
+
+**Source vs tests:** a file matching a test glob (`test_*`, `*_test.*`,
+`*_tests.*`, `*.test.*`, `*.spec.*`, or living under `tests/`, `test/`,
+`__tests__/`, `spec/`) is `tests`; everything else is `source`. Both groups
+are plain config in `.ratchet.json` -- edit `include`/`exclude`/`extensions`
+to carve out a different split, e.g. `"exclude": ["vendor/**", "**/*.gen.*"]`
+to stop counting vendored or generated code.
+
+**Existing repo:** `ratchet init` measures today's totals and sets the
+ceilings there (plus optional `--slack`). A file already over
+`max_file_lines` is frozen at its current size, so nothing is refused on
+day one -- you start where you are. From then on a ceiling may only shrink,
+unless a human runs `ratchet grant`.
+
 ## What the agent sees when refused
 
 ```
