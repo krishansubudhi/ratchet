@@ -1,0 +1,11 @@
+# Copy to .github/workflows/ratchet.yml
+name: ratchet
+on: [pull_request]
+jobs:
+  budget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # --base needs the base commit
+      - uses: OWNER/ratchet@v0    # replace OWNER once published

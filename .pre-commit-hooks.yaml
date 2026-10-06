@@ -1,0 +1,7 @@
+- id: ratchet
+  name: ratchet (code-size budget)
+  description: Refuse changes that grow the code past its recorded ceilings.
+  entry: ratchet check
+  language: python
+  pass_filenames: false
+  always_run: true

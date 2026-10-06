@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "max_file_lines": 400,
+  "slack": 20,
+  "groups": {
+    "source": {
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test_*",
+        "**/*_test.*",
+        "**/*_tests.*",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/tests/**",
+        "**/test/**",
+        "**/__tests__/**",
+        "**/spec/**"
+      ],
+      "extensions": [
+        ".py"
+      ]
+    },
+    "tests": {
+      "include": [
+        "**/test_*",
+        "**/*_test.*",
+        "**/*_tests.*",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/tests/**",
+        "**/test/**",
+        "**/__tests__/**",
+        "**/spec/**"
+      ],
+      "exclude": [],
+      "extensions": [
+        ".py"
+      ]
+    }
+  },
+  "ceilings": {
+    "source": 710,
+    "tests": 289
+  },
+  "file_ceilings": {}
+}

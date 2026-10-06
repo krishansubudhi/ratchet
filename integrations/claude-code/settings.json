@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "deny": ["Bash(ratchet grant:*)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "ratchet check --hook" }
+        ]
+      }
+    ]
+  }
+}

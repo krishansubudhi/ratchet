@@ -1,0 +1,29 @@
+name: ratchet
+description: Refuse pull requests that grow the code past its budget, or raise the budget without a logged grant.
+branding:
+  icon: trending-down
+  color: green
+inputs:
+  base:
+    description: Ref to compare against. Defaults to the pull request base, or none on push.
+    required: false
+    default: ""
+  directory:
+    description: Directory holding .ratchet.json.
+    required: false
+    default: "."
+runs:
+  using: composite
+  steps:
+    - name: ratchet check
+      shell: bash
+      env:
+        RATCHET_PATH: ${{ github.action_path }}
+        INPUT_BASE: ${{ inputs.base }}
+        PR_BASE: ${{ github.event.pull_request.base.sha }}
+        INPUT_DIR: ${{ inputs.directory }}
+      run: |
+        base="${INPUT_BASE:-$PR_BASE}"
+        set -- check
+        if [ -n "$base" ]; then set -- check --base "$base"; fi
+        PYTHONPATH="$RATCHET_PATH" python3 -m ratchet -C "$INPUT_DIR" "$@"
