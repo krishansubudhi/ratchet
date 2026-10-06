@@ -99,7 +99,7 @@ freed is now the new ceiling.
 | Claude Code | Stop hook `ratchet check --hook`: [integrations/claude-code](integrations/claude-code/README.md) |
 | Cursor, Codex CLI, aider | instruction file + git hook / test-cmd: [integrations/other-agents.md](integrations/other-agents.md) |
 | pre-commit | `.pre-commit-hooks.yaml`, hook id `ratchet` |
-| GitHub Actions | `uses: OWNER/ratchet@v0`: [integrations/github](integrations/github/README.md) |
+| GitHub Actions | `uses: krishansubudhi/ratchet@v0`: [integrations/github](integrations/github/README.md) |
 | Anything else | prompt snippet: [integrations/any-agent.md](integrations/any-agent.md) |
 
 ## Configuration

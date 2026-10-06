@@ -146,4 +146,4 @@ Start with the current size of your repo. The budget won't make anything
 smaller on day one, but from then on every line that gets in had to earn
 its place.
 
-**Code:** [github.com/OWNER/ratchet](https://github.com/OWNER/ratchet) *(link placeholder)*
+**Code:** [github.com/krishansubudhi/ratchet](https://github.com/krishansubudhi/ratchet)

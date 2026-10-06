@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0          # --base needs the base commit
-      - uses: OWNER/ratchet@v0    # replace OWNER once published
+      - uses: krishansubudhi/ratchet@v0
 ```
 
 On a pull request the action runs `ratchet check --base <PR base sha>`. That
