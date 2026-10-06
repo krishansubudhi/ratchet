@@ -1,0 +1,96 @@
+diff --git a/src/click/formatting.py b/src/click/formatting.py
+index c4aa2de..63842e7 100644
+--- a/src/click/formatting.py
++++ b/src/click/formatting.py
+@@ -318,3 +318,91 @@ def join_options(options: cabc.Iterable[str]) -> tuple[str, bool]:
+ 
+     rv.sort(key=lambda x: x[0])
+     return ", ".join(x[1] for x in rv), any_prefix_is_slash
++
++
++def render_two_column_list(
++    rows,
++    col_max: int = 30,
++    col_spacing: int = 2,
++    width: int = 78,
++) -> str:
++    """Render a list of (term, description) pairs as two aligned columns.
++
++    Added for the changelog command, which needs to print option-like rows
++    without going through a HelpFormatter instance.
++    """
++    rows = list(rows)
++    widths = measure_table(rows)
++    if len(widths) != 2:
++        raise TypeError("Expected two columns for definition list")
++
++    first_col = min(widths[0], col_max) + col_spacing
++    out = []
++
++    for first, second in iter_rows(rows, len(widths)):
++        line = f"{first}"
++        if not second:
++            out.append(line + "\n")
++            continue
++        if term_len(first) <= first_col - col_spacing:
++            line += " " * (first_col - term_len(first))
++        else:
++            line += "\n" + " " * first_col
++
++        text_width = max(width - first_col - 2, 10)
++        wrapped_text = wrap_text(second, text_width, preserve_paragraphs=True)
++        lines = wrapped_text.splitlines()
++
++        if lines:
++            line += f"{lines[0]}\n"
++            for extra in lines[1:]:
++                line += f"{'':>{first_col}}{extra}\n"
++        else:
++            line += "\n"
++        out.append(line)
++
++    return "".join(out)
++
++
++def render_two_column_list_padded(
++    rows,
++    col_max: int = 30,
++    col_spacing: int = 4,
++    width: int = 78,
++) -> str:
++    """Same as render_two_column_list but with wider default spacing.
++
++    Kept separate so callers that want extra breathing room between columns
++    don't have to pass col_spacing every time.
++    """
++    rows = list(rows)
++    widths = measure_table(rows)
++    if len(widths) != 2:
++        raise TypeError("Expected two columns for definition list")
++
++    first_col = min(widths[0], col_max) + col_spacing
++    out = []
++
++    for first, second in iter_rows(rows, len(widths)):
++        line = f"{first}"
++        if not second:
++            out.append(line + "\n")
++            continue
++        if term_len(first) <= first_col - col_spacing:
++            line += " " * (first_col - term_len(first))
++        else:
++            line += "\n" + " " * first_col
++
++        text_width = max(width - first_col - 2, 10)
++        wrapped_text = wrap_text(second, text_width, preserve_paragraphs=True)
++        lines = wrapped_text.splitlines()
++
++        if lines:
++            line += f"{lines[0]}\n"
++            for extra in lines[1:]:
++                line += f"{'':>{first_col}}{extra}\n"
++        else:
++            line += "\n"
++        out.append(line)
++
++    return "".join(out)

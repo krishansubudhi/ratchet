@@ -2,33 +2,33 @@
 
 [![CI](https://github.com/krishansubudhi/ratchet/actions/workflows/ci.yml/badge.svg)](https://github.com/krishansubudhi/ratchet/actions/workflows/ci.yml)
 
-**A code-size budget that only goes down.**
+**A code-size budget that only goes down.** Coding agents are good at adding
+code and bad at deciding not to. `ratchet` gives the repo a line budget:
+growth past the ceiling is refused, in plain words the agent can act on, and
+only a human can raise it.
 
-Coding agents are good at adding code and bad at deciding not to. Each change
-looks reasonable on its own: a helper next to one that already exists, a
-defensive branch nobody needs, a 900-line file that keeps getting a little
-longer. A month later the repo is twice the size and no better.
+![ratchet refusing a duplicated-code change on pallets/click, then passing once the duplicate is removed](docs/demo.gif)
 
-`ratchet` gives the repo a line budget. Growth past the recorded ceiling is
-refused, an oversized file has to be split, and only a human can raise a
-ceiling, with a logged reason. When the code shrinks, `ratchet tighten` lowers
-the ceilings, and they never go back up on their own. It works with any agent
-harness, has no dependencies, and tells the agent in plain words what to do
-next.
-
-**Let your agent set it up:** paste this to your agent: `Set up ratchet in
-/path/to/repo by following https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md`
+Real run, on [pallets/click](https://github.com/pallets/click): `ratchet init`
+records today's size; an agent asked for a feature pastes a near-duplicate of
+existing code instead of reusing it; `ratchet check` refuses the growth and
+says exactly why; the duplicate goes, and the check passes again. Real
+commands and output: [docs/examples.md](docs/examples.md). (The bloat step
+is a scripted patch standing in for the agent, honestly -- see the caption
+there.)
 
 ## Quickstart
 
-```sh
-pipx install ratchet-size   # or `pip install ratchet-size`, or `pip install -e .` from a clone
-ratchet init                # records today's totals in .ratchet.json; commit it
-ratchet check               # exit 0 = within budget, 1 = refused, 2 = setup error
-```
+1. **Install:** `pipx install ratchet-size` (or `pip install ratchet-size`,
+   or `pip install -e .` from a clone).
+2. **Record today's size:** `ratchet init` -- writes `.ratchet.json`; commit it.
+3. **Wire up your agent:** paste this sentence to it: *"Set up ratchet in
+   /path/to/repo by following
+   https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md"*
 
-Then wire `ratchet check` into your agent (see [Integrations](#integrations)).
-`python -m ratchet` works too.
+That's it. Everything past this point is detail you can come back to: what
+counts as a line, the four rules, grants, config, and per-harness
+integrations.
 
 ## What it counts
 
@@ -120,6 +120,13 @@ Commit both files. Here is what keeps grants honest:
 
 Run `ratchet tighten` after a cleanup and commit the result. The room you
 freed is now the new ceiling.
+
+## Running it by hand
+
+`ratchet check` exits `0` when the repo is within budget, `1` when refused,
+`2` on a setup error (bad config, not a git repo when `--base` is used, and
+so on). `python -m ratchet` works the same as the `ratchet` entry point, if
+you don't have it on `PATH`.
 
 ## Integrations
 
