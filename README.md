@@ -1,5 +1,7 @@
 # ratchet
 
+[![CI](https://github.com/krishansubudhi/ratchet/actions/workflows/ci.yml/badge.svg)](https://github.com/krishansubudhi/ratchet/actions/workflows/ci.yml)
+
 **A code-size budget that only goes down.**
 
 Coding agents are good at adding code and bad at deciding not to. Each change
