@@ -30,6 +30,24 @@ That's it. Everything past this point is detail you can come back to: what
 counts as a line, the four rules, grants, config, and per-harness
 integrations.
 
+## Claude Code plugin
+
+Prefer a plugin over the manual setup above? Ratchet ships as a Claude Code
+plugin, with this repo doubling as its own marketplace:
+
+```text
+/plugin marketplace add krishansubudhi/ratchet
+/plugin install ratchet@ratchet
+```
+
+That installs a **Stop** hook (`ratchet check --hook`, falling back to `uvx`
+if `ratchet` isn't on `PATH` yet) so Claude Code can't end a turn with the
+repo over budget, plus a `/ratchet:setup` command that runs the
+[agent setup](SETUP-FOR-AGENTS.md) -- install, `ratchet init`, detect your
+harness, `ratchet check` -- in the repo you're in. See
+[`.claude-plugin/`](.claude-plugin) and [`hooks/hooks.json`](hooks/hooks.json)
+for the manifests, or `claude plugin validate .` to check them yourself.
+
 ## What it counts
 
 **Scope:** the one git repository you run it in (`git rev-parse

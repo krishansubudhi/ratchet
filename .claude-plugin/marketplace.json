@@ -1,0 +1,15 @@
+{
+  "name": "ratchet",
+  "description": "Ratchet: a code-size budget that only goes down.",
+  "owner": {
+    "name": "Krishan Subudhi",
+    "url": "https://github.com/krishansubudhi"
+  },
+  "plugins": [
+    {
+      "name": "ratchet",
+      "source": "./",
+      "description": "A code-size budget that only goes down: keeps coding agents from bloating your repo."
+    }
+  ]
+}
