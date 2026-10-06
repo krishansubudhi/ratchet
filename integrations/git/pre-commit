@@ -1,5 +1,5 @@
 #!/bin/sh
 # ratchet: refuse a commit that leaves the repo over its code-size budget.
-# Install: cp integrations/git/pre-commit .git/hooks/pre-commit && chmod +x $_
+# Install: cp integrations/git/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
 command -v ratchet >/dev/null 2>&1 || { echo "ratchet not installed; skipping" >&2; exit 0; }
 exec ratchet check
