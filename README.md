@@ -14,6 +14,9 @@ the ceilings, and they never go back up on their own. It works with any agent
 harness, has no dependencies, and tells the agent in plain words what to do
 next.
 
+**Let your agent set it up:** paste this to your agent: `Set up ratchet in
+/path/to/repo by following https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md`
+
 ## Quickstart
 
 ```sh
