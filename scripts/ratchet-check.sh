@@ -15,10 +15,10 @@ if command -v ratchet >/dev/null 2>&1; then
 fi
 
 if command -v uvx >/dev/null 2>&1; then
-  if uvx --from ratchet-size ratchet check --hook; then
+  if uvx --from ratchet-size==0.1.0 ratchet check --hook; then
     exit 0
   fi
-  exec uvx --from "git+https://github.com/krishansubudhi/ratchet@v0" ratchet check --hook
+  exec uvx --from "git+https://github.com/krishansubudhi/ratchet@2da1918bdba6716208d75107a339495c9adf02ff" ratchet check --hook
 fi
 
 echo "ratchet: not found on PATH and uvx is unavailable; run 'pipx install ratchet-size' (or see SETUP-FOR-AGENTS.md) to enable the size-budget check" >&2
