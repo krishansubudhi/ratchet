@@ -22,7 +22,7 @@ next.
 ## Quickstart
 
 ```sh
-pip install -e .            # from a clone, or `pip install ratchet-size` once published
+pipx install ratchet-size   # or `pip install ratchet-size`, or `pip install -e .` from a clone
 ratchet init                # records today's totals in .ratchet.json; commit it
 ratchet check               # exit 0 = within budget, 1 = refused, 2 = setup error
 ```

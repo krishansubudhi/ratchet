@@ -27,18 +27,21 @@ If the first command fails, **stop and ask**: this isn't a git repo, or
 
 ## 2. Install ratchet
 
-Until it's on PyPI, install straight from GitHub. Prefer an isolated
-installer if one is on `PATH`:
+Prefer an isolated installer if one is on `PATH`. `ratchet-size` is the PyPI
+name; if that's not available yet, fall back to installing straight from
+GitHub:
 
 ```sh
 if command -v pipx >/dev/null 2>&1; then
-  pipx install "git+https://github.com/krishansubudhi/ratchet@v0"
+  pipx install ratchet-size || pipx install "git+https://github.com/krishansubudhi/ratchet@v0"
 elif command -v uv >/dev/null 2>&1; then
-  uv tool install "git+https://github.com/krishansubudhi/ratchet@v0"
+  uv tool install ratchet-size || uv tool install "git+https://github.com/krishansubudhi/ratchet@v0"
 else
-  pip install "git+https://github.com/krishansubudhi/ratchet@v0"
+  pip install ratchet-size || pip install "git+https://github.com/krishansubudhi/ratchet@v0"
 fi
 ```
+
+One-off run without installing: `uvx --from ratchet-size ratchet check`.
 
 **Verify:**
 
