@@ -38,6 +38,7 @@ def test_check_exit_codes_and_message(repo, capsys):
     assert "source is 103 lines, ceiling 101: 2 over" in out
     assert "src/util.py +2" in out
     assert "ratchet grant +2 --group source" in out
+    assert "Refused again on the same change? Stop here" in out
 
 
 def test_check_json(repo, capsys):
@@ -169,3 +170,55 @@ def test_hook_mode_blocks_with_exit_2_then_lets_go(repo):
     assert again.returncode == 0
     repo.write("src/new.py", "")
     assert subprocess.run(hook, input=b"{}", capture_output=True).returncode == 0
+
+
+def test_budget_shows_totals_remaining_and_is_always_ok(repo, capsys):
+    run(repo, "init")
+    repo.commit()
+    capsys.readouterr()
+    assert run(repo, "budget") == 0
+    out = capsys.readouterr().out
+    assert "source 101/101 (0 left)" in out
+    assert "tests 10/10 (0 left)" in out
+    # budget never refuses -- it's a report, not a gate, even over budget.
+    repo.append("src/util.py", "Y = 2\n")
+    capsys.readouterr()
+    assert run(repo, "budget") == 0
+    assert "source 102/101 (-1 left)" in capsys.readouterr().out
+
+
+def test_budget_lists_files_near_the_per_file_cap(repo, capsys):
+    run(repo, "init", "--max-file-lines", "110")
+    repo.commit()
+    capsys.readouterr()
+    assert run(repo, "budget") == 0
+    out = capsys.readouterr().out
+    assert "near the per-file cap:" in out
+    assert "src/app.py is 100/110 (10 left)" in out
+    assert "src/util.py" not in out.split("near the per-file cap:")[1]
+
+
+def test_budget_json(repo, capsys):
+    run(repo, "init")
+    repo.commit()
+    capsys.readouterr()
+    assert run(repo, "budget", "--json") == 0
+    data = json.loads(capsys.readouterr().out)
+    assert data["groups"]["source"] == {"lines": 101, "ceiling": 101, "remaining": 0}
+    assert data["over"] == {}
+
+
+def test_budget_hook_warns_only_once_headroom_goes_negative(repo, capsys):
+    run(repo, "init")
+    repo.commit()
+    assert run(repo, "budget", "--hook") == 0
+    assert capsys.readouterr().err == ""
+    repo.append("src/util.py", "Y = 2\nZ = 3\n")
+    assert run(repo, "budget", "--hook") == 2
+    err = capsys.readouterr().err
+    assert "over budget mid-edit" in err and "source +2" in err
+
+
+def test_budget_hook_never_blocks_on_a_missing_config(tmp_path, capsys):
+    assert main(["-C", str(tmp_path), "budget", "--hook"]) == 0
+    assert capsys.readouterr().err == ""

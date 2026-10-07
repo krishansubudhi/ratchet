@@ -9,6 +9,9 @@ anything else.
 
 This repo has a code-size budget enforced by `ratchet`.
 
+- Run `ratchet budget` any time, including mid-task, to see current vs
+  ceiling and how much room is left -- it only measures, no tests run, so
+  it's cheap to check before you've written a lot of code rather than after.
 - Run `ratchet check` before you say a task is done. Exit 0 means OK. Exit 1
   means refused, and the message says what grew, by how much, and how to fix it.
 - When refused, fix it yourself, in this order:
@@ -16,6 +19,9 @@ This repo has a code-size budget enforced by `ratchet`.
      new one, simplify. Leave tests passing.
   2. Split: if a file is over the per-file limit, move a cohesive group of
      definitions (the message lists seams) into a new file.
+- If `ratchet check` refuses the same change a second time, stop: don't cut
+  more and resubmit a third time. Report what's over and by how much to a
+  human instead.
 - Never run `ratchet grant`, and never edit `.ratchet.json` or
   `.ratchet-grants.jsonl`. A grant is a human decision. If the growth is truly
   needed, stop and say what grew and why, so a human can grant it.

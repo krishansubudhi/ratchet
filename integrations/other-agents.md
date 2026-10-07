@@ -49,7 +49,10 @@ auto-test: true
 read: AGENTS.md   # holding the snippet from any-agent.md
 ```
 
-If you already have a test command, chain the two: `test-cmd: "pytest -q && ratchet check"`.
+If you already have a test command, chain the two with `ratchet check`
+first: size is cheap to check and tells you to stop before you pay for a
+slow test run that a refusal would have thrown away anyway.
+`test-cmd: "ratchet check && pytest -q"`.
 
 ## Anything else
 

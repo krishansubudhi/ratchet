@@ -1,0 +1,2 @@
+{"after": 764, "before": 710, "by": "chef", "lines": 54, "reason": "budget command, SessionStart/PostToolUse hooks, and near-cap detection to stop end-of-run refusal loops", "target": "source", "ts": "2026-10-07T13:53:59Z"}
+{"after": 322, "before": 289, "by": "chef", "lines": 33, "reason": "tests for ratchet budget, near_files, and the PostToolUse meter", "target": "tests", "ts": "2026-10-07T13:53:59Z"}

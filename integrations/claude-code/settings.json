@@ -3,6 +3,21 @@
     "deny": ["Bash(ratchet grant:*)"]
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "ratchet budget 2>/dev/null || true" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "ratchet budget --hook" }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [

@@ -31,10 +31,36 @@ How it behaves:
 - Missing config or another error: it prints the error and exits 0, so a
   broken setup never blocks the agent.
 
-## Optional: check after every edit
+That's one refusal, not a loop: an agent that cuts lines, gets refused again,
+and tries a third time has misread the rule. The refusal text itself says so
+-- stop and report the numbers instead.
 
-A `PostToolUse` hook gives faster feedback, but it fires while a refactor is
-half done. Use it only if your edits are small:
+## See the budget before you start
+
+A **SessionStart** hook prints `ratchet budget` into the agent's context, so
+the ceiling is known before the first line is written rather than discovered
+at the first refusal:
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "ratchet budget 2>/dev/null || true" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## A live meter while you work
+
+A **PostToolUse** hook runs `ratchet budget --hook` after every edit. It
+stays silent while there is headroom, and the moment a bucket's remaining
+headroom goes negative it prints one short warning with the overage --
+mid-work, not only at Stop:
 
 ```json
 {
@@ -42,12 +68,21 @@ half done. Use it only if your edits are small:
     "PostToolUse": [
       {
         "matcher": "Edit|Write|MultiEdit",
-        "hooks": [ { "type": "command", "command": "ratchet check --hook" } ]
+        "hooks": [ { "type": "command", "command": "ratchet budget --hook" } ]
       }
     ]
   }
 }
 ```
+
+Unlike running the full `ratchet check --hook` after every edit, this never
+dumps the whole refusal message mid-refactor -- just the overage -- so it's
+cheap enough to run after every edit rather than only "if your edits are
+small."
+
+Both of these ship wired up already if you install the Claude Code plugin;
+the snippets above are for the manual, non-plugin setup. The same JSON is in
+[`settings.json`](settings.json) next to this file.
 
 ## Keep grants human
 

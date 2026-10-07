@@ -40,9 +40,11 @@ plugin, with this repo doubling as its own marketplace:
 /plugin install ratchet@ratchet
 ```
 
-That installs a **Stop** hook (`ratchet check --hook`, falling back to `uvx`
-if `ratchet` isn't on `PATH` yet) so Claude Code can't end a turn with the
-repo over budget, plus a `/ratchet:setup` command that runs the
+That installs a **SessionStart** hook that prints the budget into context, a
+**PostToolUse** meter that warns the moment an edit pushes a bucket over, and
+a **Stop** hook (`ratchet check --hook`, falling back to `uvx` if `ratchet`
+isn't on `PATH` yet) so Claude Code can't end a turn with the repo over
+budget -- plus a `/ratchet:setup` command that runs the
 [agent setup](SETUP-FOR-AGENTS.md) -- install, `ratchet init`, detect your
 harness, `ratchet check` -- in the repo you're in. See
 [`.claude-plugin/`](.claude-plugin) and [`hooks/hooks.json`](hooks/hooks.json)
@@ -72,6 +74,36 @@ ceilings there (plus optional `--slack`). A file already over
 day one -- you start where you are. From then on a ceiling may only shrink,
 unless a human runs `ratchet grant`.
 
+## Budget
+
+The usual failure mode for an agent is to write the whole change, run the
+check at the end, get refused, cut some lines, get refused again, and repeat
+-- burning a turn each time on something it could have seen coming.
+`ratchet budget` is the fix: it prints current vs ceiling, and remaining
+headroom, per group, plus any file that's near its own per-file cap, without
+running a single test:
+
+```
+$ ratchet budget
+ratchet budget -- source 10,188/10,300 (112 left), tests 4,950/5,000 (50 left)
+near the per-file cap:
+  app/api.py is 390/400 (10 left)
+```
+
+`ratchet budget --json` gives the same numbers as data, for a harness.
+
+Two hooks put it in front of the agent without it having to ask:
+
+- A **SessionStart** hook prints it into the agent's context at the start of
+  a session, so the ceiling is known before the first line is written.
+- A **PostToolUse** hook (`ratchet budget --hook`) runs after every edit and
+  stays silent until a bucket's remaining headroom goes negative, then
+  prints one short warning with the overage -- mid-work, not only at the end.
+
+Both ship with the Claude Code plugin; see [`hooks/hooks.json`](hooks/hooks.json)
+and [integrations/claude-code](integrations/claude-code/README.md) to wire
+them up by hand elsewhere.
+
 ## What the agent sees when refused
 
 ```
@@ -90,11 +122,14 @@ Do not edit .ratchet.json or .ratchet-grants.jsonl to get past this.
 If the growth is truly needed, stop and ask a human to run:
   ratchet grant +112 --group source --reason "<why>" --by <name>
   ratchet grant +31 --file app/api.py --reason "<why>" --by <name>
+Refused again on the same change? Stop here: report these numbers to a
+human instead of cutting more and resubmitting.
 ```
 
 Every refusal says what grew, by how much, and which fix applies: shrink,
-split, or ask a human. For a harness, `ratchet check --json` gives the same
-result as data.
+split, or ask a human -- and, if this is the second time in a row, to stop
+asking the agent and ask a human instead. For a harness, `ratchet check
+--json` gives the same result as data.
 
 ## The four rules
 
@@ -143,8 +178,10 @@ freed is now the new ceiling.
 
 `ratchet check` exits `0` when the repo is within budget, `1` when refused,
 `2` on a setup error (bad config, not a git repo when `--base` is used, and
-so on). `python -m ratchet` works the same as the `ratchet` entry point, if
-you don't have it on `PATH`.
+so on). `ratchet budget` always exits `0` -- it's a report, not a gate --
+except in `--hook` mode (see above), which exits `2` the moment headroom
+goes negative. `python -m ratchet` works the same as the `ratchet` entry
+point, if you don't have it on `PATH`.
 
 ## Integrations
 

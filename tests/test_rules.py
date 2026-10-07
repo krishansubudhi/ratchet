@@ -99,6 +99,20 @@ def test_tighten_only_goes_down():
     assert rules.tighten(new, sizes)[1] == []
 
 
+def test_near_files_finds_files_close_to_or_over_their_cap():
+    c = cfg(source=1000, max_file_lines=100)
+    sizes = {"source": {"a.py": 95, "b.py": 50, "c.py": 101}, "tests": {}}
+    found = rules.near_files(c, sizes)
+    assert [p for p, _, _ in found] == ["c.py", "a.py"]   # most urgent first
+    assert found[0] == ("c.py", 101, 100)
+
+
+def test_near_files_respects_a_grandfathered_file_ceiling():
+    c = cfg(source=1000, max_file_lines=400, file_ceilings={"big.py": 100})
+    sizes = {"source": {"big.py": 95, "small.py": 10}, "tests": {}}
+    assert rules.near_files(c, sizes) == [("big.py", 95, 100)]
+
+
 def test_glob_semantics():
     assert measure.matches("a/b/tests/x.py", ["**/tests/**"])
     assert measure.matches("tests/x.py", ["**/tests/**"])

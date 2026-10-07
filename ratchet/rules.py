@@ -87,6 +87,20 @@ def rule_file_size(cfg: Mapping[str, Any], sizes: Sizes,
     return out
 
 
+def near_files(cfg: Mapping[str, Any], sizes: Sizes, headroom: float = 0.1
+              ) -> list[tuple[str, int, int]]:
+    """(path, lines, cap) for files within `headroom` (10% by default) of
+    their per-file cap, or already over it. Most urgent -- least remaining,
+    negative first -- sorts first."""
+    out = []
+    for files in sizes.values():
+        for path, lines in files.items():
+            cap = file_limit(cfg, path)
+            if cap - lines <= cap * headroom:
+                out.append((path, lines, cap))
+    return sorted(out, key=lambda t: t[2] - t[1])
+
+
 def limits_of(cfg: Mapping[str, Any]) -> dict[str, int]:
     """Every number that caps growth, flattened: groups by name, files as
     `file:PATH`, and the per-file limit itself."""

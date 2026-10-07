@@ -94,7 +94,7 @@ Check for, in `<path>`:
 
 | Found | Harness | Wire |
 |---|---|---|
-| `.claude/` or `CLAUDE.md` | Claude Code | Stop hook — merge the JSON from [`integrations/claude-code/settings.json`](integrations/claude-code/settings.json) into `.claude/settings.json` ([details](integrations/claude-code/README.md)) |
+| `.claude/` or `CLAUDE.md` | Claude Code | Stop hook, plus a SessionStart budget line and a PostToolUse meter — merge the JSON from [`integrations/claude-code/settings.json`](integrations/claude-code/settings.json) into `.claude/settings.json` ([details](integrations/claude-code/README.md)) |
 | `.cursor/` or `.cursorrules` | Cursor | instruction snippet + git hook ([details](integrations/other-agents.md)) |
 | `AGENTS.md` | Codex CLI or similar | instruction snippet in `AGENTS.md` + git hook ([details](integrations/other-agents.md)) |
 | `.aider.conf.yml` | aider | add `ratchet check` to `test-cmd` ([details](integrations/other-agents.md)) |
@@ -163,6 +163,9 @@ what's staged — your call based on how the human phrased the task. **Never
   it.
 - **Grants are the human's**, not yours. If you ever think a ceiling needs to
   go up, say so and stop — don't do it yourself.
+- **One refusal, then stop.** If `ratchet check` refuses the same change
+  twice, don't cut and resubmit a third time — report the numbers to the
+  human instead. Run `ratchet budget` along the way so you see this coming.
 
 ## Summary template
 

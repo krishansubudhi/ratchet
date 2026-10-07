@@ -1,6 +1,7 @@
 # Copyright 2026 Krishan Subudhi
 # SPDX-License-Identifier: Apache-2.0
-"""Command line: init, check, grant, tighten. Exit 0 ok, 1 refused, 2 error."""
+"""Command line: init, check, budget, grant, tighten. Exit 0 ok, 1 refused,
+2 error."""
 
 from __future__ import annotations
 
@@ -98,6 +99,8 @@ def render(result: dict[str, Any], violations: Sequence[rules.Violation]) -> str
     if hints:
         out.append("If the growth is truly needed, stop and ask a human to run:")
         out += ['  %s --reason "<why>" --by <name>' % h for h in hints]
+    out.append("Refused again on the same change? Stop here: report these "
+               "numbers to a human instead of cutting more and resubmitting.")
     return "\n".join(out)
 
 
@@ -150,6 +153,64 @@ def cmd_check(root: str, args: argparse.Namespace) -> int:
     return REFUSED if violations else OK
 
 
+def _budget(root: str, cfg: dict[str, Any]) -> dict[str, Any]:
+    """Current vs ceiling per group, plus files near any per-file cap. Just
+    measures the working tree -- no tests run, nothing slow -- so it's cheap
+    to call often: at session start, and after every edit."""
+    sizes = _sizes(root, cfg)
+    totals_ = rules.totals(sizes)
+    groups = {g: {"lines": totals_.get(g, 0), "ceiling": int(c),
+                  "remaining": int(c) - totals_.get(g, 0)}
+             for g, c in cfg["ceilings"].items()}
+    over = {g: -v["remaining"] for g, v in groups.items() if v["remaining"] < 0}
+    return {"groups": groups, "near_files": rules.near_files(cfg, sizes),
+            "over": over}
+
+
+def render_budget(data: dict[str, Any]) -> str:
+    parts = ["%s %s/%s (%s left)" % (g, n(v["lines"]), n(v["ceiling"]),
+                                     n(v["remaining"]))
+             for g, v in data["groups"].items()]
+    out = ["ratchet budget -- " + ", ".join(parts)]
+    if data["near_files"]:
+        out.append("near the per-file cap:")
+        for path, lines, cap in data["near_files"][:5]:
+            out.append("  %s is %s/%s (%s left)" % (
+                path, n(lines), n(cap), n(cap - lines)))
+    return "\n".join(out)
+
+
+def cmd_budget(root: str, args: argparse.Namespace) -> int:
+    cfg = config.load(root)
+    data = _budget(root, cfg)
+    if args.json:
+        payload = dict(data, near_files=[
+            {"path": p, "lines": lines, "cap": cap}
+            for p, lines, cap in data["near_files"]])
+        print(json.dumps(payload, indent=2))
+    else:
+        print(render_budget(data))
+    return OK
+
+
+def cmd_budget_hook(root: str, args: argparse.Namespace) -> int:
+    """PostToolUse mode: a live meter. Silent while there is headroom; the
+    moment a bucket's remaining headroom goes negative, one short warning
+    with the overage, so an agent learns mid-edit instead of at Stop. Errors
+    never block, same as `check --hook`."""
+    try:
+        data = _budget(root, config.load(root))
+    except (config.ConfigError, RuntimeError):
+        return OK
+    if not data["over"]:
+        return OK
+    print("ratchet: over budget mid-edit -- %s; shrink before you try to "
+          "stop, don't wait for the refusal" % ", ".join(
+              "%s +%s" % (g, n(o)) for g, o in data["over"].items()),
+          file=sys.stderr)
+    return 2
+
+
 def _hook_retry() -> bool:
     """True when an agent harness says this is its second try at stopping
     after a refusal (Claude Code's `stop_hook_active`). Let it stop then: it
@@ -167,8 +228,9 @@ def cmd_hook(root: str, args: argparse.Namespace) -> int:
     """Exit 2 with the refusal on stderr is what agent hooks read as "blocked,
     show the model why". Errors never block: they print and exit 0."""
     if _hook_retry():
-        print("ratchet: still over budget; tell the human what grew and "
-              "whether a grant is needed", file=sys.stderr)
+        print("ratchet: still over budget after a retry; stop here and tell "
+              "the human what grew and whether a grant is needed",
+              file=sys.stderr)
         return OK
     out = sys.stdout
     sys.stdout = sys.stderr
@@ -259,6 +321,13 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--hook", action="store_true",
                    help="agent-hook mode: report on stderr, exit 2 when refused")
 
+    s = sub.add_parser("budget", help="current vs ceiling and remaining "
+                       "headroom per group -- fast, no tests run")
+    s.add_argument("--json", action="store_true", help="machine-readable output")
+    s.add_argument("--hook", action="store_true",
+                   help="PostToolUse mode: one short warning if headroom "
+                        "just went negative, else silent")
+
     s = sub.add_parser("grant", help="(humans) allow N more lines, logged")
     s.add_argument("amount", type=_amount, metavar="+N")
     where = s.add_mutually_exclusive_group()
@@ -274,8 +343,8 @@ def parser() -> argparse.ArgumentParser:
     return p
 
 
-COMMANDS = {"init": cmd_init, "check": cmd_check, "grant": cmd_grant,
-            "tighten": cmd_tighten}
+COMMANDS = {"init": cmd_init, "check": cmd_check, "budget": cmd_budget,
+            "grant": cmd_grant, "tighten": cmd_tighten}
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -287,6 +356,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             root = measure.git(root, "rev-parse", "--show-toplevel").strip()
         if args.cmd == "check" and args.hook:
             return cmd_hook(root, args)
+        if args.cmd == "budget" and args.hook:
+            return cmd_budget_hook(root, args)
         return COMMANDS[args.cmd](root, args)
     except (config.ConfigError, RuntimeError) as exc:
         print("ratchet: error: %s" % exc, file=sys.stderr)
