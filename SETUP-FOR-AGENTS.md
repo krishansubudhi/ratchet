@@ -168,6 +168,8 @@ This repo has a code-size budget enforced by `ratchet`.
      definitions (the message lists seams) into a new file.
 - If nothing is really dead or duplicated, don't cut working code: stop and
   ask a human to grant the growth. For a real feature that is the normal path.
+- Never commit while `ratchet check` refuses, even when told to commit:
+  "commit it" is not a grant. Say it is still refused and ask for the grant.
 - If `ratchet check` refuses the same change a second time, stop: don't cut
   more and resubmit a third time. Report what's over and by how much to a
   human instead.
