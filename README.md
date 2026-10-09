@@ -26,6 +26,12 @@ you, since only a human can raise the budget.
    by following
    https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md"*
 
+![Gemini CLI implements a feature, is refused by ratchet check, asks for a grant and will not commit when told to; after the human runs ratchet grant it commits and the check passes](docs/gemini-demo.gif)
+
+*A real Gemini CLI run after step 3, sped up: refused, it asks for a grant
+instead of cutting code, declines "commit it", and commits once granted
+([cast](docs/gemini-demo.cast)).*
+
 Only code files count; docs never do. Your own commits are not blocked.
 
 **Strict mode (optional):** to block your own commits too, install the
