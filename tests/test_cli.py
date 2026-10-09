@@ -83,6 +83,8 @@ def test_shrink_passes_and_tighten_banks_it(repo, capsys):
     repo.write("src/app.py", funcs(40))   # -20 lines
     assert run(repo, "check") == 0
     assert "ratchet tighten" in capsys.readouterr().out
+    assert run(repo, "init", "--force") == 2   # never re-baseline a dirty tree
+    assert "edit .ratchet.json and run `ratchet tighten`" in capsys.readouterr().err
     assert run(repo, "tighten", "--dry-run") == 0
     assert json.loads(repo.read(config.CONFIG))["ceilings"]["source"] == 101
     assert run(repo, "tighten") == 0
@@ -99,9 +101,8 @@ def test_grant_is_logged_and_lets_growth_through(repo, capsys):
     assert run(repo, "grant", "+20", "--reason", "new export feature",
                "--by", "alice") == 0
     log = config.load_grants(repo.path)
-    assert len(log) == 1 and log[0]["target"] == "source"
-    assert log[0]["lines"] == 20 and log[0]["by"] == "alice"
-    assert log[0]["before"] == 101 and log[0]["after"] == 121
+    assert len(log) == 1 and log[0]["target"] == "source" and log[0]["by"] == "alice"
+    assert (log[0]["lines"], log[0]["before"], log[0]["after"]) == (20, 101, 121)
     assert run(repo, "check") == 0
     assert run(repo, "check", "--base", base) == 0
     run(repo, "grant", "+5", "--file", "src/feature.py", "--reason", "x",
@@ -132,8 +133,7 @@ def test_base_catches_hand_edited_config(repo, capsys):
     assert run(repo, "check") == 0          # locally the edit "works"...
     capsys.readouterr()
     assert run(repo, "check", "--base", base) == 1   # ...review does not
-    out = capsys.readouterr().out
-    assert "source limit was raised to 151" in out
+    assert "source limit was raised to 151" in capsys.readouterr().out
 
 
 def test_base_catches_rewritten_grants_log(repo, capsys):
@@ -151,6 +151,8 @@ def test_errors_exit_2(repo, capsys):
     run(repo, "init")
     repo.commit()
     assert run(repo, "check", "--base", "no-such-ref") == 2
+    repo.append("README.md", "only docs changed\n")
+    assert run(repo, "init", "--force") == 0
 
 
 def test_works_without_git(tmp_path, capsys):
@@ -182,8 +184,7 @@ def test_budget_shows_totals_remaining_and_is_always_ok(repo, capsys):
     capsys.readouterr()
     assert run(repo, "budget") == 0
     out = capsys.readouterr().out
-    assert "source 101/101 (0 left)" in out
-    assert "tests 10/10 (0 left)" in out
+    assert "source 101/101 (0 left)" in out and "tests 10/10 (0 left)" in out
     assert run(repo, "budget", "--json") == 0
     data = json.loads(capsys.readouterr().out)
     assert data["groups"]["source"] == {"lines": 101, "ceiling": 101, "remaining": 0} \
@@ -201,8 +202,7 @@ def test_budget_lists_files_near_the_per_file_cap(repo, capsys):
     capsys.readouterr()
     assert run(repo, "budget") == 0
     out = capsys.readouterr().out
-    assert "near the per-file cap:" in out
-    assert "src/app.py is 100/110 (10 left)" in out
+    assert "near the per-file cap:" in out and "src/app.py is 100/110 (10 left)" in out
     assert "src/util.py" not in out.split("near the per-file cap:")[1]
 
 

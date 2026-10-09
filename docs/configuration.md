@@ -24,7 +24,9 @@ but cannot write it.
 - Each file belongs to the first group that matches it.
 - Edit `include`/`exclude`/`extensions` to change what counts, e.g.
   `"exclude": ["vendor/**", "**/*.gen.*"]` to stop counting vendored or
-  generated code.
+  generated code. Then run `ratchet tighten`, which re-measures and only
+  lowers ceilings. Don't use `init --force` to change the split or to get
+  past a refusal: it re-baselines, so it refuses on uncommitted code.
 - `slack` keeps some headroom above the measured size after `init` and
   `tighten`, if you would rather not require a delete for every add.
 - Files are listed with `git ls-files`, so ignored files never count.

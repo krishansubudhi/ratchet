@@ -17,16 +17,19 @@ from .rules import n
 OK, REFUSED, ERROR = 0, 1, 2
 
 
-def _sizes(root: str, cfg: dict[str, Any]) -> dict[str, dict[str, int]]:
-    return measure.measure(root, cfg["groups"])
-
-
 def cmd_init(root: str, args: argparse.Namespace) -> int:
-    if os.path.exists(os.path.join(root, config.CONFIG)) and not args.force:
+    exists = os.path.exists(os.path.join(root, config.CONFIG))
+    if exists and not args.force:
         print("%s already exists; use --force to rewrite it" % config.CONFIG,
               file=sys.stderr)
         return ERROR
     cfg = config.scaffold(root, args.max_file_lines, args.slack)
+    ref = _default_ref(root) if exists else None
+    if ref and measure.classify(measure.changed_since(root, ref), cfg["groups"]):
+        print("ratchet: uncommitted changes would be baked into the new ceilings"
+              "; commit or stash them first. To change groups/excludes, edit %s "
+              "and run `ratchet tighten`." % config.CONFIG, file=sys.stderr)
+        return ERROR
     config.save(root, cfg)
     print("wrote %s" % config.CONFIG)
     for group, cap in cfg["ceilings"].items():
@@ -128,7 +131,7 @@ def render(result: dict[str, Any], violations: Sequence[rules.Violation],
 
 def cmd_check(root: str, args: argparse.Namespace) -> int:
     cfg = config.load(root)
-    sizes = _sizes(root, cfg)
+    sizes = measure.measure(root, cfg["groups"])
     base = None
     base_log: list[dict[str, Any]] = []
     log = config.load_grants(root)
@@ -161,10 +164,8 @@ def cmd_check(root: str, args: argparse.Namespace) -> int:
         "slack": int(cfg["slack"]),
         "totals": {g: {"lines": t, "ceiling": caps[g]}
                    for g, t in rules.totals(sizes).items()},
-        "grew": {},
+        "grew": {g: v for g, v in _grew(root, against, sizes).items() if v},
     }
-    grew = _grew(root, against, sizes)
-    result["grew"] = {g: v for g, v in grew.items() if v}
     if args.json:
         payload = dict(result, violations=[v.to_dict() for v in violations],
                        grew={g: [{"path": p, "lines": d} for p, d in v]
@@ -177,7 +178,7 @@ def cmd_check(root: str, args: argparse.Namespace) -> int:
 
 def _budget(root: str, cfg: dict[str, Any]) -> dict[str, Any]:
     """Current vs ceiling per group, plus files near a per-file cap. Cheap."""
-    sizes = _sizes(root, cfg)
+    sizes = measure.measure(root, cfg["groups"])
     totals_ = rules.totals(sizes)
     groups = {g: {"lines": totals_.get(g, 0), "ceiling": int(c),
                   "remaining": int(c) - totals_.get(g, 0)}
@@ -305,15 +306,13 @@ def cmd_grant(root: str, args: argparse.Namespace) -> int:
 
 def cmd_tighten(root: str, args: argparse.Namespace) -> int:
     cfg = config.load(root)
-    new, notes = rules.tighten(cfg, _sizes(root, cfg))
+    new, notes = rules.tighten(cfg, measure.measure(root, cfg["groups"]))
     if not notes:
         print("nothing to tighten: every ceiling already fits the code")
         return OK
     if not args.dry_run:
         config.save(root, new)
-    print(("would tighten:" if args.dry_run else "tightened:"))
-    for note in notes:
-        print("  " + note)
+    print("\n  ".join(["would tighten:" if args.dry_run else "tightened:"] + notes))
     return OK
 
 
@@ -371,10 +370,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             config.find_root(args.dir)
         if args.cmd == "init" and measure.is_git(root):
             root = measure.git(root, "rev-parse", "--show-toplevel").strip()
-        if args.cmd == "check" and args.hook:
-            return cmd_hook(root, args)
-        if args.cmd == "budget" and args.hook:
-            return cmd_budget_hook(root, args)
+        if args.cmd in ("check", "budget") and args.hook:
+            return (cmd_hook if args.cmd == "check" else cmd_budget_hook)(root, args)
         return COMMANDS[args.cmd](root, args)
     except (config.ConfigError, RuntimeError) as exc:
         print("ratchet: error: %s" % exc, file=sys.stderr)

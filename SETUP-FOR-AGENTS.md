@@ -46,7 +46,7 @@ else
 fi
 ```
 
-One-off run without installing: `uvx --from ratchet-size==0.2.1 ratchet check`.
+One-off run without installing: `uvx --from ratchet-size==0.2.2 ratchet check`.
 
 **Verify:**
 
@@ -90,8 +90,10 @@ If any of these are present and large, **propose an edit** to
 silently exclude things — a narrower budget is also a decision for a human to
 own. If nothing looks out of place, say so and move on.
 
-If you do change the config after proposing it, re-run `ratchet init --force`
-so the ceilings match the corrected split, and show the new output again.
+If you do change the config after proposing it, run `ratchet tighten` (it
+re-measures and only lowers ceilings) and show its output. Never re-run
+`ratchet init --force` to change the split or to get past a refusal: it
+re-baselines, absorbing any uncommitted growth, and resets the groups.
 
 ## 4. Wire up the agent(s)
 
