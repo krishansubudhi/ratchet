@@ -56,14 +56,20 @@ auto-test: true
 read: AGENTS.md   # holding the snippet from any-agent.md
 ```
 
-aider's own `--gitignore` default (on unless disabled) writes `.aider*` to
-`.gitignore` the first time it runs in a repo. That pattern also matches
-`.aider.conf.yml`, so aider will silently refuse to create or edit it
-("Skipping edits to .aider.conf.yml that matches gitignore spec") and the
-test-cmd never gets wired. Check `.gitignore` for a bare `.aider*` line before
-writing the config; if it's there, narrow it (e.g. `.aider.chat.history.md`,
-`.aider.tags.cache.v4/`) or add `.aider.conf.yml` back with a `!.aider.conf.yml`
-line, then verify the file actually has content before reporting it as wired.
+**Fix `.gitignore` before touching `.aider.conf.yml`, not after.** aider's own
+`--gitignore` default (on unless disabled) writes a bare `.aider*` line to
+`.gitignore` the first time it runs in a repo, and that pattern also matches
+`.aider.conf.yml`. If you create or edit `.aider.conf.yml` while that line is
+still there, aider silently drops the change ("Skipping edits to
+.aider.conf.yml that matches gitignore spec") in the same response that
+reports success — the model has already written its "wired" summary before
+the skip happens, so it will confidently claim the file is in place when it
+isn't. The fix has to land first, as its own edit: if `.gitignore` has a bare
+`.aider*` line, narrow it (e.g. `.aider.chat.history.md`,
+`.aider.tags.cache.v4/`) or add `.aider.conf.yml` back with a
+`!.aider.conf.yml` line, *then* write `.aider.conf.yml`. Either way, `cat
+.aider.conf.yml` afterward and require real content before reporting it wired
+— don't trust the summary template to have gotten this right on its own.
 
 If you already have a test command, chain the two with `ratchet check`
 first: size is cheap to check and tells you to stop before you pay for a
