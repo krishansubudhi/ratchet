@@ -15,10 +15,15 @@ This repo has a code-size budget enforced by `ratchet`.
 - Run `ratchet check` before you say a task is done. Exit 0 means OK. Exit 1
   means refused, and the message says what grew, by how much, and how to fix it.
 - When refused, fix it yourself, in this order:
-  1. Shrink: delete dead code, reuse an existing helper instead of writing a
-     new one, simplify. Leave tests passing.
+  1. Shrink: delete code that is actually dead or duplicated, or reuse an
+     existing helper instead of writing a new one. Leave tests passing.
+     Never compress working code to fit: no joining lines, dropping `with`
+     blocks or error handling, shortening names, or stripping docstrings.
+     That hides growth instead of removing it.
   2. Split: if a file is over the per-file limit, move a cohesive group of
      definitions (the message lists seams) into a new file.
+- If nothing is really dead or duplicated, don't cut working code: stop and
+  ask a human to grant the growth. For a real feature that is the normal path.
 - If `ratchet check` refuses the same change a second time, stop: don't cut
   more and resubmit a third time. Report what's over and by how much to a
   human instead.

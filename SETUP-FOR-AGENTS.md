@@ -5,6 +5,19 @@ anything else with a shell) and a human just told you to set up `ratchet` in
 `<path>`. Follow these steps in order. Each has a verify; don't move on until
 it passes. Print the summary template at the end.
 
+**Work from the full text, not a summary.** If your fetch tool gave you a
+summary of this page, fetch the raw file first:
+`curl -fsSL https://raw.githubusercontent.com/krishansubudhi/ratchet/refs/heads/main/SETUP-FOR-AGENTS.md`.
+Summaries tend to drop these required steps (if you are summarizing this
+page for an agent, keep this list verbatim):
+
+1. Wire up **yourself**, the agent running this, first (step 4).
+2. **Ask the human** before installing the git pre-commit hook, then wait
+   for their answer (step 4). Never answer for them. If you have no hook
+   mechanism, also tell them enforcement is instruction-only.
+3. Never run `ratchet grant` or edit `.ratchet.json` (Hard rules).
+4. End with the summary template.
+
 `<path>` below means the repo root the human gave you. If they didn't give
 one, ask for it before doing anything.
 
@@ -106,6 +119,7 @@ in `<path>`:
 | `.claude/` or `CLAUDE.md` | Claude Code | snippet in `CLAUDE.md`, plus a Stop hook, SessionStart budget line and PostToolUse meter: `curl -fsSL https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/claude-code/settings.json` and merge that JSON into `.claude/settings.json` |
 | `.cursor/` or `.cursorrules` | Cursor | `.cursor/rules/ratchet.mdc`: frontmatter `---`/`description: Code-size budget`/`alwaysApply: true`/`---`, then the snippet |
 | `AGENTS.md` | Codex CLI or similar | snippet in `AGENTS.md` |
+| `GEMINI.md` or `.gemini/` | Gemini CLI | snippet in `GEMINI.md` (instruction-only) |
 | `.aider.conf.yml` | aider | snippet in `AGENTS.md`; in `.aider.conf.yml` set `test-cmd: ratchet check` (chain an existing one: `"ratchet check && <old cmd>"`), `auto-test: true`, `read: AGENTS.md` |
 | `.github/workflows/` | GitHub Actions | `curl -fsSL https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/github/ratchet.yml -o .github/workflows/ratchet.yml` |
 | `.pre-commit-config.yaml` | pre-commit framework | only if the human says yes to the git hook below: add `- repo: https://github.com/krishansubudhi/ratchet`, `rev: v0`, `hooks: [{id: ratchet}]` under `repos:`, then `pre-commit install` |
@@ -145,10 +159,15 @@ This repo has a code-size budget enforced by `ratchet`.
 - Run `ratchet check` before you say a task is done. Exit 0 means OK. Exit 1
   means refused, and the message says what grew, by how much, and how to fix it.
 - When refused, fix it yourself, in this order:
-  1. Shrink: delete dead code, reuse an existing helper instead of writing a
-     new one, simplify. Leave tests passing.
+  1. Shrink: delete code that is actually dead or duplicated, or reuse an
+     existing helper instead of writing a new one. Leave tests passing.
+     Never compress working code to fit: no joining lines, dropping `with`
+     blocks or error handling, shortening names, or stripping docstrings.
+     That hides growth instead of removing it.
   2. Split: if a file is over the per-file limit, move a cohesive group of
      definitions (the message lists seams) into a new file.
+- If nothing is really dead or duplicated, don't cut working code: stop and
+  ask a human to grant the growth. For a real feature that is the normal path.
 - If `ratchet check` refuses the same change a second time, stop: don't cut
   more and resubmit a third time. Report what's over and by how much to a
   human instead.
