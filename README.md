@@ -20,7 +20,10 @@ there.)
 ## Quickstart
 
 1. **Install:** `pipx install ratchet-size` (or `pip install ratchet-size`)
-2. **Baseline:** `ratchet init` -- writes `.ratchet.json`; commit it.
+2. **Baseline:** run `ratchet init` anywhere inside the repo; it writes
+   `.ratchet.json` at the repo root; commit it. Ratchet works without git
+   too: outside a repo it walks the directory; only strict mode, `--base`,
+   and the "grew vs HEAD" breakdown need git.
 3. **Wire up your agent:** paste this sentence to it: *"Set up ratchet in
    /path/to/repo by following
    https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md"*

@@ -99,17 +99,17 @@ Check for, in `<path>`:
 | `AGENTS.md` | Codex CLI or similar | instruction snippet in `AGENTS.md` ([details](integrations/other-agents.md)) |
 | `.aider.conf.yml` | aider | add `ratchet check` to `test-cmd` ([details](integrations/other-agents.md)) |
 | `.github/workflows/` | GitHub Actions | add the workflow from [`integrations/github`](integrations/github/README.md) |
-| `.pre-commit-config.yaml` | pre-commit framework | strict mode only (it blocks the human's commits too): add the `ratchet` hook ([details](integrations/pre-commit/README.md)) |
+| `.pre-commit-config.yaml` | pre-commit framework | only if the human says yes to the git hook below: add the `ratchet` hook ([details](integrations/pre-commit/README.md)) |
 | none of the above | unknown | instruction snippet only, plus the instruction-only message below |
 
 A repo can match more than one row — wire all that apply.
 
-**Do not install the git pre-commit hook** unless the human asked for strict
-mode. By default ratchet enforces on the agent, not on the human's own
-commits; the hook blocks everyone's commits, and that is the human's choice
-to make. If they did ask for strict mode, install it (or, if
-`.pre-commit-config.yaml` exists, the pre-commit framework hook from that
-row instead):
+After wiring the harness integration, **ask the human before installing the git
+pre-commit hook**. In one line: it also blocks their own commits that grow
+code. If a harness you wired is instruction-only (see below), also say:
+without the hook, enforcement is instruction-only. Install it only on a yes
+(or, if `.pre-commit-config.yaml` exists, the pre-commit framework hook from
+that row instead):
 
 ```sh
 curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit
@@ -198,8 +198,7 @@ Source/tests split: <looks right | excluded X, Y after asking>
 Harness(es) detected and wired: <list, e.g. "Claude Code (Stop hook),
 GitHub Actions (.github/workflows/ratchet.yml)">
 
-Git pre-commit hook: <not installed (default; opt in for strict mode) |
-installed (you asked for strict mode)>
+Git pre-commit hook: <installed (you said yes) | not installed (you said no)>
 <if any harness is instruction-only: the instruction-only message above>
 
 ratchet check: <pass | still refused — see below>
