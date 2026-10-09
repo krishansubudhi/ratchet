@@ -41,7 +41,7 @@ else
 fi
 ```
 
-One-off run without installing: `uvx --from ratchet-size==0.1.0 ratchet check`.
+One-off run without installing: `uvx --from ratchet-size==0.2.0 ratchet check`.
 
 **Verify:**
 

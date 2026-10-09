@@ -2,7 +2,7 @@
   "name": "ratchet",
   "displayName": "Ratchet",
   "description": "A code-size budget that only goes down: keeps coding agents from bloating your repo. Wires up a Stop hook that runs `ratchet check` and a /ratchet:setup command that installs and configures ratchet in the current repo.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Krishan Subudhi",
     "url": "https://github.com/krishansubudhi"

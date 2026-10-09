@@ -22,6 +22,7 @@ there.)
 1. **Install:** `pipx install ratchet-size` (or `pip install ratchet-size`,
    or `pip install -e .` from a clone).
 2. **Record today's size:** `ratchet init` -- writes `.ratchet.json`; commit it.
+   No agent? Add the git hook: `curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit`
 3. **Wire up your agent:** paste this sentence to it: *"Set up ratchet in
    /path/to/repo by following
    https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md"*
