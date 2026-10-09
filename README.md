@@ -31,11 +31,11 @@ Only code files count; docs never do. Your own commits are not blocked.
 **Strict mode (optional):** to block your own commits too, install the
 [git pre-commit hook](docs/integrations.md#strict-mode-the-git-hook).
 
+## What a refusal looks like
+
 ![A coding agent asked to commit a change is blocked by ratchet's git hook for one line over the ceiling; it stops and asks the human, who runs ratchet grant, and the commit then passes](docs/agent-demo.gif)
 
 *A real headless Claude Code run, replayed: the commit is blocked by 1 line, the agent stops and asks instead of cutting code, and commits once a human grants it ([`docs/agent-demo.sh`](docs/agent-demo.sh)).*
-
-## What a refusal looks like
 
 ```
 ratchet: refused -- source grew 56 lines past its limit (556 / 500)
