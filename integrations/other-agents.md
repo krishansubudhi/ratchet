@@ -56,6 +56,15 @@ auto-test: true
 read: AGENTS.md   # holding the snippet from any-agent.md
 ```
 
+aider's own `--gitignore` default (on unless disabled) writes `.aider*` to
+`.gitignore` the first time it runs in a repo. That pattern also matches
+`.aider.conf.yml`, so aider will silently refuse to create or edit it
+("Skipping edits to .aider.conf.yml that matches gitignore spec") and the
+test-cmd never gets wired. Check `.gitignore` for a bare `.aider*` line before
+writing the config; if it's there, narrow it (e.g. `.aider.chat.history.md`,
+`.aider.tags.cache.v4/`) or add `.aider.conf.yml` back with a `!.aider.conf.yml`
+line, then verify the file actually has content before reporting it as wired.
+
 If you already have a test command, chain the two with `ratchet check`
 first: size is cheap to check and tells you to stop before you pay for a
 slow test run that a refusal would have thrown away anyway.

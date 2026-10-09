@@ -120,7 +120,7 @@ in `<path>`:
 | `.cursor/` or `.cursorrules` | Cursor | `.cursor/rules/ratchet.mdc`: frontmatter `---`/`description: Code-size budget`/`alwaysApply: true`/`---`, then the snippet |
 | `AGENTS.md` | Codex CLI or similar | snippet in `AGENTS.md` |
 | `GEMINI.md` or `.gemini/` | Gemini CLI | snippet in `GEMINI.md` (instruction-only) |
-| `.aider.conf.yml` | aider | snippet in `AGENTS.md`; in `.aider.conf.yml` set `test-cmd: ratchet check` (chain an existing one: `"ratchet check && <old cmd>"`), `auto-test: true`, `read: AGENTS.md` |
+| `.aider.conf.yml` | aider | snippet in `AGENTS.md`; in `.aider.conf.yml` set `test-cmd: ratchet check` (chain an existing one: `"ratchet check && <old cmd>"`), `auto-test: true`, `read: AGENTS.md`. aider's own `.aider*` gitignore entry can block writes to this filename -- see the aider section of [other-agents.md](integrations/other-agents.md) and confirm the file actually has content before reporting it wired |
 | `.github/workflows/` | GitHub Actions | `curl -fsSL https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/github/ratchet.yml -o .github/workflows/ratchet.yml` |
 | `.pre-commit-config.yaml` | pre-commit framework | only if the human says yes to the git hook below: add `- repo: https://github.com/krishansubudhi/ratchet`, `rev: v0`, `hooks: [{id: ratchet}]` under `repos:`, then `pre-commit install` |
 | anything else | no hook mechanism | snippet in whichever file that agent reads (create it if missing), plus the instruction-only message below |
