@@ -19,12 +19,14 @@ you, since only a human can raise the budget.
 
 ## Quickstart
 
+Remove it any time: [uninstall](docs/uninstall.md).
+
 1. **Install:** `pip install ratchet-size` (or `pipx install ratchet-size`)
 2. **Baseline:** run `ratchet init` anywhere in the repo, and commit the
    `.ratchet.json` it writes.
 3. **Wire up your agent:** paste it this: *"Set up ratchet in /path/to/repo
    by following
-   https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md"*
+   https://raw.githubusercontent.com/krishansubudhi/ratchet/main/SETUP-FOR-AGENTS.md"*
 
 ![Gemini CLI implements a feature, is refused by ratchet check, asks for a grant and will not commit when told to; after the human runs ratchet grant it commits and the check passes](docs/gemini-demo.gif)
 

@@ -3,7 +3,7 @@ description: Install ratchet and wire it into this repo by following SETUP-FOR-A
 ---
 
 Follow the step-by-step instructions at
-https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md exactly,
+https://raw.githubusercontent.com/krishansubudhi/ratchet/main/SETUP-FOR-AGENTS.md exactly,
 treating the current repository root (`git rev-parse --show-toplevel`) as
 `<path>`.
 

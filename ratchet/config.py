@@ -51,8 +51,8 @@ def parse(text: str, where: str = CONFIG) -> dict[str, Any]:
     cfg.setdefault("file_ceilings", {})
     for group in cfg["groups"]:
         if group not in cfg["ceilings"]:
-            raise ConfigError("%s: group %r has no ceiling; run `ratchet "
-                              "tighten` or `ratchet init --force`" % (where, group))
+            raise ConfigError("%s: group %r has no ceiling; add one in .ratchet.json "
+                              "(a human decision), or remove the group" % (where, group))
     return cfg
 
 

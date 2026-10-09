@@ -54,7 +54,7 @@ agent() {
 
 capture() {
   python3 -m venv "$WORK/venv"
-  "$WORK/venv/bin/pip" install --quiet "ratchet-size==${RATCHET_VERSION:-0.2.1}"
+  "$WORK/venv/bin/pip" install --quiet "ratchet-size==${RATCHET_VERSION:-0.2.2}"
   export PATH="$WORK/venv/bin:$PATH"
 
   mkdir -p "$WORK/demo/app" "$WORK/demo/tests"

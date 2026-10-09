@@ -3,6 +3,9 @@
 Back to the [README](../README.md). The easiest path: tell your agent to follow
 [SETUP-FOR-AGENTS.md](../SETUP-FOR-AGENTS.md); it is self-contained, wires up
 the agent running it first, then any other harness it detects in the repo.
+Headless/non-interactive agent modes may block or skip steps from a fetched
+page, so run setup interactively and check its summary against what it
+actually did.
 
 | Harness | How |
 |---------|-----|
