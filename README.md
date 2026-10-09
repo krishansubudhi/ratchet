@@ -19,22 +19,23 @@ there.)
 
 ## Quickstart
 
-Ratchet measures; a hook enforces. Without step 3, nothing is ever refused.
-
 1. **Install:** `pipx install ratchet-size` (or `pip install ratchet-size`)
 2. **Baseline:** `ratchet init` -- writes `.ratchet.json`; commit it.
-3. **Enforce:** install the git pre-commit hook:
-
-   ```sh
-   curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit
-   ```
-
-   Now any commit that grows code past the ceiling is refused.
-4. **Agent (optional):** paste this sentence to it: *"Set up ratchet in
+3. **Wire up your agent:** paste this sentence to it: *"Set up ratchet in
    /path/to/repo by following
    https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md"*
-   It teaches the agent to check before stopping, so it trims instead of
-   hitting the hook.
+   Ratchet then refuses the *agent* when it tries to finish with code over
+   the ceiling; it trims or asks you. Your own commits are not blocked.
+
+**Strict (optional): also block your own commits.** Opt in with the git
+pre-commit hook:
+
+```sh
+curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit
+```
+
+What you sign up for: any commit that grows code past the ceiling is refused
+until you delete code or a human runs `ratchet grant +N --reason ...`.
 
 Only code files count (`.py`, `.js`, `.ts`, `.go`, ...) -- README and docs
 edits never count.
@@ -201,8 +202,8 @@ point, if you don't have it on `PATH`.
 | Harness | How |
 |---------|-----|
 | Claude Code | Stop hook `ratchet check --hook`: [integrations/claude-code](integrations/claude-code/README.md) |
-| Cursor, Codex CLI, aider | instruction file + git hook / test-cmd: [integrations/other-agents.md](integrations/other-agents.md) |
-| pre-commit | framework hook, or a plain git hook: [integrations/pre-commit](integrations/pre-commit/README.md) |
+| Cursor, Codex CLI, aider | instruction file (+ opt-in git hook) / aider test-cmd: [integrations/other-agents.md](integrations/other-agents.md) |
+| pre-commit (opt-in strict) | framework hook, or a plain git hook: [integrations/pre-commit](integrations/pre-commit/README.md) |
 | GitHub Actions | `uses: krishansubudhi/ratchet@v0`: [integrations/github](integrations/github/README.md) |
 | Anything else | prompt snippet: [integrations/any-agent.md](integrations/any-agent.md) |
 

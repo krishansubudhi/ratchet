@@ -4,11 +4,16 @@ Every harness can do two things: read instructions, and run git. ratchet uses bo
 
 1. **Instructions.** Paste the snippet from [`any-agent.md`](any-agent.md) into
    the file your agent reads at startup.
-2. **A gate the agent cannot talk its way past.** Use a git pre-commit hook
-   (below) or [pre-commit](https://pre-commit.com), plus the
+2. **A gate the agent cannot talk its way past.** Where the harness has a
+   finish hook, use it. Otherwise the snippet is a request, not a block; for a
+   hard block, opt into strict mode with a git pre-commit hook (below) or
+   [pre-commit](https://pre-commit.com), and/or the
    [GitHub Action](github/README.md) in CI.
 
-## Git pre-commit hook (no framework)
+## Git pre-commit hook (no framework, opt-in strict mode)
+
+This blocks every commit that grows code past the ceiling, including your
+own, until code is deleted or a human runs `ratchet grant`.
 
 ```sh
 cp integrations/git/pre-commit .git/hooks/pre-commit
@@ -30,12 +35,14 @@ alwaysApply: true
 <paste the snippet from any-agent.md>
 ```
 
-Cursor's agent commits through git, so the pre-commit hook applies too.
+Without a hook this is instruction-only. If you opted into the pre-commit
+hook, it applies to Cursor's commits too.
 
 ## Codex CLI
 
 Put the snippet in `AGENTS.md` at the repo root. Codex reads it on every run.
-Install the pre-commit hook so a commit it makes is refused while over budget.
+Instruction-only by default; opt into the pre-commit hook if you want a
+commit it makes refused while over budget.
 
 ## aider
 

@@ -95,19 +95,34 @@ Check for, in `<path>`:
 | Found | Harness | Wire |
 |---|---|---|
 | `.claude/` or `CLAUDE.md` | Claude Code | Stop hook, plus a SessionStart budget line and a PostToolUse meter — merge the JSON from [`integrations/claude-code/settings.json`](integrations/claude-code/settings.json) into `.claude/settings.json` ([details](integrations/claude-code/README.md)) |
-| `.cursor/` or `.cursorrules` | Cursor | instruction snippet + git hook ([details](integrations/other-agents.md)) |
-| `AGENTS.md` | Codex CLI or similar | instruction snippet in `AGENTS.md` + git hook ([details](integrations/other-agents.md)) |
+| `.cursor/` or `.cursorrules` | Cursor | instruction snippet ([details](integrations/other-agents.md)) |
+| `AGENTS.md` | Codex CLI or similar | instruction snippet in `AGENTS.md` ([details](integrations/other-agents.md)) |
 | `.aider.conf.yml` | aider | add `ratchet check` to `test-cmd` ([details](integrations/other-agents.md)) |
 | `.github/workflows/` | GitHub Actions | add the workflow from [`integrations/github`](integrations/github/README.md) |
-| `.pre-commit-config.yaml` | pre-commit framework | add the `ratchet` hook ([details](integrations/pre-commit/README.md)) |
-| always, in addition to any row above | git | install the plain git hook (or, if `.pre-commit-config.yaml` exists, the pre-commit framework hook from that row instead): `curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit` |
+| `.pre-commit-config.yaml` | pre-commit framework | strict mode only (it blocks the human's commits too): add the `ratchet` hook ([details](integrations/pre-commit/README.md)) |
+| none of the above | unknown | instruction snippet only, plus the instruction-only message below |
 
-A repo can match more than one row — wire all that apply. The last row is
-not a fallback: ratchet itself watches nothing, and the commit hook is what
-refuses an over-budget commit, so always install it even when Claude Code's
-Stop hook or the GitHub Action is also wired. For
-every harness
-that reads instructions (Claude Code, Cursor, Codex, any `AGENTS.md`/
+A repo can match more than one row — wire all that apply.
+
+**Do not install the git pre-commit hook** unless the human asked for strict
+mode. By default ratchet enforces on the agent, not on the human's own
+commits; the hook blocks everyone's commits, and that is the human's choice
+to make. If they did ask for strict mode, install it (or, if
+`.pre-commit-config.yaml` exists, the pre-commit framework hook from that
+row instead):
+
+```sh
+curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit
+```
+
+If a harness you wired has no hook mechanism (Cursor, Codex CLI, or no row
+matched), enforcement for it is the instruction snippet alone. Say so in
+your final message, verbatim:
+
+> enforcement for this agent is instruction-only; for a hard block, opt into
+> the git hook: `curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit`
+
+For every harness that reads instructions (Claude Code, Cursor, Codex, any `AGENTS.md`/
 `CLAUDE.md` reader), also paste the snippet from
 [`integrations/any-agent.md`](integrations/any-agent.md) into the file that
 harness reads: create the file if it doesn't exist yet (e.g. `.claude/`
@@ -182,6 +197,10 @@ Source/tests split: <looks right | excluded X, Y after asking>
 
 Harness(es) detected and wired: <list, e.g. "Claude Code (Stop hook),
 GitHub Actions (.github/workflows/ratchet.yml)">
+
+Git pre-commit hook: <not installed (default; opt in for strict mode) |
+installed (you asked for strict mode)>
+<if any harness is instruction-only: the instruction-only message above>
 
 ratchet check: <pass | still refused — see below>
 
