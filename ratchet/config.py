@@ -1,14 +1,8 @@
 # Copyright 2026 Krishan Subudhi
 # SPDX-License-Identifier: Apache-2.0
-"""The two files ratchet keeps in your repo.
-
-`.ratchet.json` holds the policy and the ceilings. JSON, not TOML, on
-purpose: ratchet has to WRITE this file (init, tighten, grant) and the
-standard library can read TOML but not write it, on any Python version.
-
-`.ratchet-grants.jsonl` is the append-only log of every human allowance,
-one JSON object per line, so a grant is a one-line diff a reviewer sees.
-"""
+"""The two files ratchet keeps: `.ratchet.json` (policy and ceilings; JSON
+because ratchet must write it) and `.ratchet-grants.jsonl` (append-only log
+of every human allowance, one JSON object per line)."""
 
 from __future__ import annotations
 
@@ -30,8 +24,7 @@ class ConfigError(Exception):
 
 
 def find_root(start: str) -> str:
-    """The nearest directory at or above `start` holding a config, else the
-    git top level, else `start` itself."""
+    """Nearest dir at/above `start` with a config, else git top, else start."""
     here = os.path.abspath(start)
     while True:
         if os.path.isfile(os.path.join(here, CONFIG)):
@@ -93,9 +86,8 @@ def default_groups(paths: list[str]) -> dict[str, dict[str, list[str]]]:
 
 
 def scaffold(root: str, max_file_lines: int, slack: int) -> dict[str, Any]:
-    """A fresh config with ceilings at today's totals plus slack. Files
-    already over the per-file limit are recorded at their size, so they may
-    shrink but never grow: you start where you are."""
+    """Ceilings at today's totals plus slack; files already over the per-file
+    limit are recorded at their size: they may shrink, never grow."""
     groups = default_groups(measure.list_files(root))
     sizes = measure.measure(root, groups)
     return {

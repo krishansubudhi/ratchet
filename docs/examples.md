@@ -44,15 +44,14 @@ $ git apply agent_change.patch
 
 ```
 $ ratchet check
-ratchet: REFUSED -- 1 problem (source 11,502/11,430, tests 13,385/13,385)
+ratchet: refused -- source grew 72 lines past its limit (11,502 / 11,430)
 
-1. source is 11,502 lines, ceiling 11,430: 72 over
-   grew vs HEAD: src/click/formatting.py +72
-   fix: remove at least 72 lines of source: delete dead code, reuse what exists instead of adding a parallel version, simplify.
+  src/click/formatting.py  +72
 
-Do not edit .ratchet.json or .ratchet-grants.jsonl to get past this.
-If the growth is truly needed, stop and ask a human to run:
-  ratchet grant +72 --group source --reason "<why>" --by <name>
+Fix it one of two ways:
+  1. remove 72 lines of code (dead code, duplicates), or
+  2. allow the growth (humans only -- agents must ask, never run this):
+     ratchet grant +72 --group source --reason "why"
 exit code: 1
 ```
 

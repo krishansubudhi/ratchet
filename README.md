@@ -121,32 +121,53 @@ Both ship with the Claude Code plugin; see [`hooks/hooks.json`](hooks/hooks.json
 and [integrations/claude-code](integrations/claude-code/README.md) to wire
 them up by hand elsewhere.
 
-## What the agent sees when refused
+## What a refusal looks like
+
+A human committing through the git hook sees:
 
 ```
-ratchet: REFUSED -- 2 problems (source 10,412/10,300, tests 4,980/5,000)
+ratchet: commit blocked -- source grew 1 line past its limit (1,129 / 1,128)
 
-1. source is 10,412 lines, ceiling 10,300: 112 over
-   grew vs HEAD: app/api.py +80, app/store.py +40
-   fix: remove at least 112 lines of source: delete dead code, reuse what
-   exists instead of adding a parallel version, simplify.
-2. app/api.py is 431 lines, limit 400
-   seams near the middle: line 198 `def upload`, line 230 `class Session`
-   fix: split it at a seam: move a cohesive group of definitions into a new
-   file, so each piece is under 400 lines.
+  starter.py  +1
+
+Fix it one of two ways:
+  1. remove 1 line of code (dead code, duplicates), or
+  2. allow the growth (humans only -- agents must ask, never run this):
+     ratchet grant +1 --group source --reason "why"
+```
+
+An agent sees the same facts, told to ask rather than grant, and to stop
+after a second refusal:
+
+```
+ratchet: refused -- 2 problems
+
+1. source grew 56 lines past its limit (556 / 500)
+     app/api.py  +40
+     app/store.py  +16
+
+   Fix it one of two ways:
+     1. remove 56 lines of code (dead code, duplicates), or
+     2. stop and ask a human to allow the growth (humans only -- never run this yourself):
+        ratchet grant +56 --group source --reason "why"
+
+2. app/api.py is 20 lines past its limit (420 / 400)
+     seams near the middle: line 313 `def upload`, line 316 `class Session`
+
+   Fix it one of two ways:
+     1. split it at a seam: move a cohesive group of definitions into a new file, each under 400 lines, or
+     2. stop and ask a human to allow the growth (humans only -- never run this yourself):
+        ratchet grant +20 --file app/api.py --reason "why"
 
 Do not edit .ratchet.json or .ratchet-grants.jsonl to get past this.
-If the growth is truly needed, stop and ask a human to run:
-  ratchet grant +112 --group source --reason "<why>" --by <name>
-  ratchet grant +31 --file app/api.py --reason "<why>" --by <name>
-Refused again on the same change? Stop here: report these numbers to a
-human instead of cutting more and resubmitting.
+Refused again on the same change? Stop here: report these numbers to a human instead of cutting more and resubmitting.
 ```
 
-Every refusal says what grew, by how much, and which fix applies: shrink,
-split, or ask a human -- and, if this is the second time in a row, to stop
-asking the agent and ask a human instead. For a harness, `ratchet check
---json` gives the same result as data.
+Agent wording is used under `check --hook`, when `RATCHET_AGENT=1`, or when
+a known agent's variable is set (`CLAUDECODE`, `CURSOR_AGENT`, `GEMINI_CLI`);
+`RATCHET_AGENT=0` forces the human wording. "commit blocked" replaces
+"refused" when run from a git hook. For a harness, `ratchet check --json`
+gives the same result as data.
 
 ## The four rules
 
@@ -166,9 +187,11 @@ Sometimes the growth is the point: a real feature, a new integration. Then a
 human runs:
 
 ```sh
-ratchet grant +300 --group source --reason "CSV export (issue 41)" --by alice
-ratchet grant +60 --file app/api.py --reason "until the router split lands" --by alice
+ratchet grant +300 --group source --reason "CSV export (issue 41)"
+ratchet grant +60 --file app/api.py --reason "until the router split lands"
 ```
+
+`--by` defaults to `git config user.name` (else `$USER`); pass it to override.
 
 That raises the ceiling in `.ratchet.json` and appends a line to
 `.ratchet-grants.jsonl`:

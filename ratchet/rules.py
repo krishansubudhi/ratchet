@@ -56,11 +56,9 @@ def rule_budget(cfg: Mapping[str, Any], sizes: Sizes,
             continue
         out.append(Violation(
             "budget", group, total, cap,
-            "%s is %s lines, ceiling %s: %s over" % (
-                group, n(total), n(cap), n(total - cap)),
-            "remove at least %s lines of %s: delete dead code, reuse what "
-            "exists instead of adding a parallel version, simplify." % (
-                n(total - cap), group)))
+            "%s grew %s past its limit (%s / %s)" % (
+                group, lines(total - cap), n(total), n(cap)),
+            "remove %s of code (dead code, duplicates)" % lines(total - cap)))
     return out
 
 
@@ -68,22 +66,17 @@ def rule_file_size(cfg: Mapping[str, Any], sizes: Sizes,
                    limits: Mapping[str, int] | None = None) -> list[Violation]:
     out = []
     for files in sizes.values():
-        for path, lines in sorted(files.items()):
+        for path, size in sorted(files.items()):
             cap = int((limits or {}).get(path, file_limit(cfg, path)))
-            if lines <= cap:
+            if size <= cap:
                 continue
-            grandfathered = path in cfg["file_ceilings"]
             out.append(Violation(
-                "file-size", "file:" + path, lines, cap,
-                "%s is %s lines, %s %s" % (
-                    path, n(lines),
-                    "and was recorded at" if grandfathered else "limit",
-                    n(cap)),
-                ("this file was already over the limit, so it may shrink "
-                 "but not grow; " if grandfathered else "") +
+                "file-size", "file:" + path, size, cap,
+                "%s is %s past its %s (%s / %s)" % (
+                    path, lines(size - cap), "recorded size" if
+                    path in cfg["file_ceilings"] else "limit", n(size), n(cap)),
                 "split it at a seam: move a cohesive group of definitions "
-                "into a new file, so each piece is under %s lines." %
-                n(cfg["max_file_lines"])))
+                "into a new file, each under %s" % lines(cfg["max_file_lines"])))
     return out
 
 
@@ -217,3 +210,7 @@ def tighten(cfg: Mapping[str, Any], sizes: Sizes) -> tuple[dict[str, Any], list[
 
 def n(value: int) -> str:
     return "{:,}".format(value)
+
+
+def lines(k: int) -> str:
+    return "%s line%s" % (n(k), "" if k == 1 else "s")

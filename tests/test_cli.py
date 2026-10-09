@@ -27,7 +27,7 @@ def test_init_records_totals_and_oversized_files(repo, capsys):
     assert json.loads(repo.read(config.CONFIG))["ceilings"]["source"] == 706
 
 
-def test_check_exit_codes_and_message(repo, capsys):
+def test_check_exit_codes_and_message(repo, capsys, monkeypatch):
     run(repo, "init")
     repo.commit()
     assert run(repo, "check") == 0
@@ -35,10 +35,21 @@ def test_check_exit_codes_and_message(repo, capsys):
     repo.append("src/util.py", "Y = 2\nZ = 3\n")
     assert run(repo, "check") == 1
     out = capsys.readouterr().out
-    assert "source is 103 lines, ceiling 101: 2 over" in out
-    assert "src/util.py +2" in out
-    assert "ratchet grant +2 --group source" in out
-    assert "Refused again on the same change? Stop here" in out
+    assert out.startswith("ratchet: refused -- source grew 2 lines past its "
+                          "limit (103 / 101)\n\n  src/util.py  +2\n")
+    assert "1. remove 2 lines of code" in out and "agents must ask" in out
+    grant = 'ratchet grant +2 --group source --reason "why"\n'
+    assert grant in out and "Stop here" not in out   # no agent rules for humans
+    monkeypatch.setenv("GIT_INDEX_FILE", "x")   # git sets it in pre-commit
+    monkeypatch.setenv("CLAUDECODE", "1")
+    assert run(repo, "check") == 1
+    out = capsys.readouterr().out
+    assert out.startswith("ratchet: commit blocked -- source grew 2 lines past") \
+        and "Do not edit .ratchet.json" in out and "never run this yourself" in out
+    assert out.endswith("report these numbers to a human instead of cutting "
+                        "more and resubmitting.\n")
+    monkeypatch.setenv("RATCHET_AGENT", "0")
+    assert run(repo, "check") == 1 and "Stop here" not in capsys.readouterr().out
 
 
 def test_check_json(repo, capsys):
@@ -62,7 +73,7 @@ def test_split_suggests_seams(repo, capsys):
     capsys.readouterr()
     assert run(repo, "check") == 1
     out = capsys.readouterr().out
-    assert "src/app.py is 102 lines, limit 100" in out
+    assert "src/app.py is 2 lines past its limit (102 / 100)" in out
     assert "seams near the middle: line" in out
 
 
@@ -98,16 +109,17 @@ def test_grant_is_logged_and_lets_growth_through(repo, capsys):
     assert len(config.load_grants(repo.path)) == 2
 
 
-def test_grant_requires_reason_and_by(repo, capsys):
+def test_grant_needs_reason_and_by_defaults_to_git_user(repo, monkeypatch):
     run(repo, "init")
-    try:
-        main(["-C", repo.path, "grant", "+5", "--reason", "x"])
-    except SystemExit as exc:
-        assert exc.code == 2
     assert run(repo, "grant", "+5", "--reason", " ", "--by", "a") == 2
-    assert run(repo, "grant", "+5", "--group", "nope", "--reason", "x",
-               "--by", "a") == 2
+    assert run(repo, "grant", "+5", "--group", "nope", "--reason", "x") == 2
     assert config.load_grants(repo.path) == []
+    assert run(repo, "grant", "+5", "--reason", "x") == 0
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", repo.path + "/none")
+    monkeypatch.setenv("USER", "carol")
+    repo.git("config", "--unset", "user.name")
+    assert run(repo, "grant", "+1", "--reason", "y") == 0
+    assert [g["by"] for g in config.load_grants(repo.path)] == ["test", "carol"]
 
 
 def test_base_catches_hand_edited_config(repo, capsys):
@@ -141,14 +153,6 @@ def test_errors_exit_2(repo, capsys):
     assert run(repo, "check", "--base", "no-such-ref") == 2
 
 
-def test_python_dash_m_entry_point(repo):
-    run(repo, "init")
-    done = subprocess.run([sys.executable, "-m", "ratchet", "-C", repo.path,
-                           "check"], capture_output=True, text=True)
-    assert done.returncode == 0, done.stderr
-    assert done.stdout.startswith("ratchet: ok")
-
-
 def test_works_without_git(tmp_path, capsys):
     (tmp_path / "a.py").write_text("x = 1\n")
     assert main(["-C", str(tmp_path), "init"]) == 0
@@ -164,7 +168,7 @@ def test_hook_mode_blocks_with_exit_2_then_lets_go(repo):
     hook = [sys.executable, "-m", "ratchet", "-C", repo.path, "check", "--hook"]
     first = subprocess.run(hook, input="{}", capture_output=True, text=True)
     assert first.returncode == 2 and first.stdout == ""
-    assert "REFUSED" in first.stderr
+    assert first.stderr.rstrip().endswith("cutting more and resubmitting.")
     again = subprocess.run(hook, input='{"stop_hook_active": true}',
                            capture_output=True, text=True)
     assert again.returncode == 0
@@ -180,6 +184,10 @@ def test_budget_shows_totals_remaining_and_is_always_ok(repo, capsys):
     out = capsys.readouterr().out
     assert "source 101/101 (0 left)" in out
     assert "tests 10/10 (0 left)" in out
+    assert run(repo, "budget", "--json") == 0
+    data = json.loads(capsys.readouterr().out)
+    assert data["groups"]["source"] == {"lines": 101, "ceiling": 101, "remaining": 0} \
+        and data["over"] == {}
     # budget never refuses -- it's a report, not a gate, even over budget.
     repo.append("src/util.py", "Y = 2\n")
     capsys.readouterr()
@@ -196,16 +204,6 @@ def test_budget_lists_files_near_the_per_file_cap(repo, capsys):
     assert "near the per-file cap:" in out
     assert "src/app.py is 100/110 (10 left)" in out
     assert "src/util.py" not in out.split("near the per-file cap:")[1]
-
-
-def test_budget_json(repo, capsys):
-    run(repo, "init")
-    repo.commit()
-    capsys.readouterr()
-    assert run(repo, "budget", "--json") == 0
-    data = json.loads(capsys.readouterr().out)
-    assert data["groups"]["source"] == {"lines": 101, "ceiling": 101, "remaining": 0}
-    assert data["over"] == {}
 
 
 def test_budget_hook_warns_only_once_headroom_goes_negative(repo, capsys):

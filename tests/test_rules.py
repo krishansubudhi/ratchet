@@ -27,13 +27,13 @@ def test_under_budget_passes():
 def test_growth_past_ceiling_is_refused_with_amount():
     found = rules.check(cfg(), {"source": {"a.py": 45, "b.py": 60}, "tests": {}})
     assert kinds(found) == [("budget", "source")]
-    assert found[0].over == 5 and "5 over" in found[0].message
+    assert found[0].over == 5 and "grew 5 lines past" in found[0].message
 
 
 def test_oversized_file_must_split():
     found = rules.check(cfg(source=1000, max_file_lines=50), {"source": {"big.py": 51}, "tests": {}})
     assert kinds(found) == [("file-size", "file:big.py")]
-    assert "seam" in found[0].fix
+    assert "seam" in found[0].fix and "1 line past its limit" in found[0].message
 
 
 def test_grandfathered_file_may_shrink_not_grow():
@@ -95,16 +95,14 @@ def test_tighten_only_goes_down():
     new, notes = rules.tighten(c, sizes)
     assert new["ceilings"] == {"source": 92, "tests": 10}   # tests never rise
     assert new["file_ceilings"] == {"big.py": 60}
-    assert len(notes) == 4
-    assert rules.tighten(new, sizes)[1] == []
+    assert len(notes) == 4 and rules.tighten(new, sizes)[1] == []
 
 
 def test_near_files_finds_files_close_to_or_over_their_cap():
     c = cfg(source=1000, max_file_lines=100)
     sizes = {"source": {"a.py": 95, "b.py": 50, "c.py": 101}, "tests": {}}
-    found = rules.near_files(c, sizes)
-    assert [p for p, _, _ in found] == ["c.py", "a.py"]   # most urgent first
-    assert found[0] == ("c.py", 101, 100)
+    found = rules.near_files(c, sizes)   # most urgent first
+    assert found == [("c.py", 101, 100), ("a.py", 95, 100)]
 
 
 def test_near_files_respects_a_grandfathered_file_ceiling():
@@ -114,8 +112,7 @@ def test_near_files_respects_a_grandfathered_file_ceiling():
 
 
 def test_glob_semantics():
-    assert measure.matches("a/b/tests/x.py", ["**/tests/**"])
-    assert measure.matches("tests/x.py", ["**/tests/**"])
+    assert measure.matches("a/b/tests/x.py", ["**/tests/**"]) and measure.matches("tests/x.py", ["**/tests/**"])
     assert measure.matches("pkg/test_x.py", ["**/test_*"])
     assert not measure.matches("pkg/contest.py", ["**/test*"])
     assert not measure.matches("a/b.py", ["*.py"])

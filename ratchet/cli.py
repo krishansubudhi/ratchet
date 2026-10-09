@@ -70,37 +70,59 @@ def _grant_hint(v: rules.Violation) -> str | None:
     return None
 
 
-def render(result: dict[str, Any], violations: Sequence[rules.Violation]) -> str:
+AGENT_ENV = ("CLAUDECODE", "CURSOR_AGENT", "GEMINI_CLI")
+
+
+def agent_mode(hook: bool = False) -> bool:
+    """Hook mode, a known agent's env var, or RATCHET_AGENT=1 (0 forces off)."""
+    forced = os.environ.get("RATCHET_AGENT")
+    if forced is not None:
+        return forced not in ("", "0")
+    return hook or any(os.environ.get(v) for v in AGENT_ENV)
+
+
+def _problem(result: dict[str, Any], v: rules.Violation, agent: bool,
+             pad: str) -> list[str]:
+    out = [pad + "  %s  +%d" % g for g in result["grew"].get(v.target, [])[:5]]
+    out += [pad + "  seams near the middle: " + ", ".join(
+        "line %d `%s`" % s for s in v.seams)] * bool(v.seams)
+    out += [""] * bool(out)
+    if not (hint := _grant_hint(v)):
+        return out + [pad + "Fix: " + v.fix]
+    return out + [pad + "Fix it one of two ways:", pad + "  1. %s, or" % v.fix,
+                  pad + "  2. " + ("stop and ask a human to allow the growth "
+                                   "(humans only -- never run this yourself):"
+                                   if agent else "allow the growth (humans "
+                                   "only -- agents must ask, never run this):"),
+                  pad + '     %s --reason "why"' % hint]
+
+
+def render(result: dict[str, Any], violations: Sequence[rules.Violation],
+           agent: bool = False) -> str:
     totals = result["totals"]
-    summary = ", ".join("%s %s/%s" % (g, n(t["lines"]), n(t["ceiling"]))
-                        for g, t in totals.items())
     if not violations:
-        lines = ["ratchet: ok -- " + summary]
+        lines = ["ratchet: ok -- " + ", ".join("%s %s/%s" % (
+            g, n(t["lines"]), n(t["ceiling"])) for g, t in totals.items())]
         room = sum(t["ceiling"] - t["lines"] for t in totals.values())
         if room > result["slack"] * len(totals):
             lines.append("  the code shrank: run `ratchet tighten` and commit "
                          "to bank it")
         return "\n".join(lines)
-    out = ["ratchet: REFUSED -- %d problem%s (%s)" % (
-        len(violations), "" if len(violations) == 1 else "s", summary), ""]
-    for i, v in enumerate(violations, 1):
-        out.append("%d. %s" % (i, v.message))
-        grew = result["grew"].get(v.target, [])
-        if grew:
-            out.append("   grew vs %s: %s" % (result["against"], ", ".join(
-                "%s +%d" % g for g in grew[:5])))
-        if v.seams:
-            out.append("   seams near the middle: " + ", ".join(
-                "line %d `%s`" % s for s in v.seams))
-        out.append("   fix: " + v.fix)
-    hints = [h for h in map(_grant_hint, violations) if h]
-    out += ["", "Do not edit %s or %s to get past this." % (
-        config.CONFIG, config.GRANTS)]
-    if hints:
-        out.append("If the growth is truly needed, stop and ask a human to run:")
-        out += ['  %s --reason "<why>" --by <name>' % h for h in hints]
-    out.append("Refused again on the same change? Stop here: report these "
-               "numbers to a human instead of cutting more and resubmitting.")
+    head = "ratchet: %s -- " % ("commit blocked" if os.environ.get(
+        "GIT_INDEX_FILE") else "refused")
+    if len(violations) == 1:
+        out = [head + violations[0].message, ""] + _problem(
+            result, violations[0], agent, "")
+    else:
+        out = [head + "%d problems" % len(violations)]
+        for i, v in enumerate(violations, 1):
+            out += ["", "%d. %s" % (i, v.message)] + _problem(
+                result, v, agent, "   ")
+    if agent:
+        out += ["", "Do not edit %s or %s to get past this." % (
+            config.CONFIG, config.GRANTS), "Refused again on the same change? "
+            "Stop here: report these numbers to a human instead of cutting "
+            "more and resubmitting."]
     return "\n".join(out)
 
 
@@ -149,14 +171,12 @@ def cmd_check(root: str, args: argparse.Namespace) -> int:
                              for g, v in result["grew"].items()})
         print(json.dumps(payload, indent=2))
     else:
-        print(render(result, violations))
+        print(render(result, violations, agent_mode(args.hook)))
     return REFUSED if violations else OK
 
 
 def _budget(root: str, cfg: dict[str, Any]) -> dict[str, Any]:
-    """Current vs ceiling per group, plus files near any per-file cap. Just
-    measures the working tree -- no tests run, nothing slow -- so it's cheap
-    to call often: at session start, and after every edit."""
+    """Current vs ceiling per group, plus files near a per-file cap. Cheap."""
     sizes = _sizes(root, cfg)
     totals_ = rules.totals(sizes)
     groups = {g: {"lines": totals_.get(g, 0), "ceiling": int(c),
@@ -194,10 +214,8 @@ def cmd_budget(root: str, args: argparse.Namespace) -> int:
 
 
 def cmd_budget_hook(root: str, args: argparse.Namespace) -> int:
-    """PostToolUse mode: a live meter. Silent while there is headroom; the
-    moment a bucket's remaining headroom goes negative, one short warning
-    with the overage, so an agent learns mid-edit instead of at Stop. Errors
-    never block, same as `check --hook`."""
+    """PostToolUse meter: silent with headroom, one short warning once it
+    goes negative. Errors never block."""
     try:
         data = _budget(root, config.load(root))
     except (config.ConfigError, RuntimeError):
@@ -212,9 +230,7 @@ def cmd_budget_hook(root: str, args: argparse.Namespace) -> int:
 
 
 def _hook_retry() -> bool:
-    """True when an agent harness says this is its second try at stopping
-    after a refusal (Claude Code's `stop_hook_active`). Let it stop then: it
-    has seen the message, and a human may need to grant."""
+    """Claude Code's `stop_hook_active`: a second stop after a refusal."""
     if sys.stdin is None or sys.stdin.isatty():
         return False
     try:
@@ -225,8 +241,7 @@ def _hook_retry() -> bool:
 
 
 def cmd_hook(root: str, args: argparse.Namespace) -> int:
-    """Exit 2 with the refusal on stderr is what agent hooks read as "blocked,
-    show the model why". Errors never block: they print and exit 0."""
+    """Exit 2 + stderr is "blocked, show the model why"; errors exit 0."""
     if _hook_retry():
         print("ratchet: still over budget after a retry; stop here and tell "
               "the human what grew and whether a grant is needed",
@@ -255,6 +270,8 @@ def _amount(text: str) -> int:
 
 
 def cmd_grant(root: str, args: argparse.Namespace) -> int:
+    args.by = args.by or measure.git(root, "config", "user.name", check=False
+                                     ).strip() or os.environ.get("USER", "")
     if not args.reason.strip() or not args.by.strip():
         print("a grant needs a real --reason and --by", file=sys.stderr)
         return ERROR
@@ -336,7 +353,7 @@ def parser() -> argparse.ArgumentParser:
     where.add_argument("--max-file-lines", action="store_true",
                        help="raise the per-file limit itself")
     s.add_argument("--reason", required=True)
-    s.add_argument("--by", required=True)
+    s.add_argument("--by", help="default: git config user.name, else $USER")
 
     s = sub.add_parser("tighten", help="lower ceilings to what the code measures")
     s.add_argument("--dry-run", action="store_true")

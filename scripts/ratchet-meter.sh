@@ -15,7 +15,7 @@ if command -v ratchet >/dev/null 2>&1; then
 fi
 
 if command -v uvx >/dev/null 2>&1; then
-  if uvx --from ratchet-size==0.2.0 ratchet budget --hook; then
+  if uvx --from ratchet-size==0.2.1 ratchet budget --hook; then
     exit 0
   fi
   exec uvx --from "git+https://github.com/krishansubudhi/ratchet@2da1918bdba6716208d75107a339495c9adf02ff" ratchet budget --hook

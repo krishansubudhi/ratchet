@@ -5,6 +5,8 @@ import subprocess
 
 import pytest
 
+from ratchet.cli import AGENT_ENV
+
 
 class Repo:
     """A throwaway git repo with helpers for writing code and committing."""
@@ -12,9 +14,8 @@ class Repo:
     def __init__(self, path):
         self.path = str(path)
         self.git("init", "-q")
-        self.git("config", "user.email", "test@example.com")
-        self.git("config", "user.name", "test")
-        self.git("config", "commit.gpgsign", "false")
+        for kv in ("user.email=test@example.com", "user.name=test", "commit.gpgsign=false"):
+            self.git("config", *kv.split("="))
 
     def git(self, *args):
         return subprocess.run(["git", "-C", self.path, *args], check=True,
@@ -47,7 +48,8 @@ def funcs(count, prefix="f"):
 
 
 @pytest.fixture
-def repo(tmp_path):
+def repo(tmp_path, monkeypatch):
+    [monkeypatch.delenv(v, raising=False) for v in ("RATCHET_AGENT", "GIT_INDEX_FILE", *AGENT_ENV)]
     r = Repo(tmp_path)
     r.write("src/app.py", funcs(50))           # 100 lines
     r.write("src/util.py", "X = 1\n")          # 1 line
