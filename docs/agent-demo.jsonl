@@ -1,0 +1,27 @@
+{"k":"title","t":"a coding agent hits ratchet's git hook"}
+{"k":"cmd","t":"ratchet init"}
+{"k":"out","t":"wrote .ratchet.json\n  source   ceiling 4 lines\n  tests    ceiling 3 lines\n  per-file limit 400 lines, 0 file(s) already over it recorded at their size\nnext: commit .ratchet.json, then run `ratchet check` before every commit"}
+{"k":"cmd","t":"curl -so .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit"}
+{"k":"cmd","t":"git add -A && git commit -qm 'add ratchet'"}
+{"k":"out","t":"ratchet: ok -- source 4/4, tests 3/3"}
+{"k":"note","t":"# an uncommitted change adds 1 line of code. ask an agent to commit it:"}
+{"k":"user","t":"commit these changes"}
+{"k":"tool","t":"git status && echo --- && git diff"}
+{"k":"result","t":"On branch master\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\tmodified:   app/greet.py\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n---\ndiff --git a/app/greet.py b/app/greet.py\nindex e2f6bac..58aadc4 100644\n--- a/app/greet.py\n+++ b/app/greet.py\n@@ -1,4 +1,5 @@\n def greet(name):\n+    name = name.strip()\n     return f\"hello, {name}\""}
+{"k":"tool","t":"git log --oneline -5"}
+{"k":"result","t":"99153f0 add ratchet"}
+{"k":"tool","t":"git add app/greet.py && git commit -m \"$(cat <<'EOF'\nStrip whitespace from name in greet\n\nCo-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>\nEOF\n)\" && git status"}
+{"k":"result","t":"Exit code 1\nratchet: commit blocked -- source grew 1 line past its limit (5 / 4)\n\n  app/greet.py  +1\n\nFix it one of two ways:\n  1. remove 1 line of code (dead code, duplicates), or\n  2. stop and ask a human to allow the growth (humans only -- never run this yourself):\n     ratchet grant +1 --group source --reason \"why\"\n\nDo not edit .ratchet.json or .ratchet-grants.jsonl to get past this.\nRefused again on the same change? Stop here: report these numbers to a human instead of cutting more and resubmitting."}
+{"k":"say","t":"The commit was blocked by a pre-commit hook called \"ratchet\" that caps file growth — `app/greet.py` grew by 1 line (5 lines vs. a 4-line limit), and it refused.\n\nThe hook is explicit that only a human should run `ratchet grant +1 --group source --reason \"...\"` to allow the growth — it should not be bypassed by me. I won't work around this (no `--no-verify`, no editing `.ratchet.json`).\n\nOptions:\n1. You grant the exception yourself: `ratchet grant +1 --group source --reason \"...\"`, then I commit.\n2. Shrink the file by 1 line elsewhere so it fits under the limit, then commit.\n\nHow would you like to proceed?"}
+{"k":"note","t":"# the human decides the line is worth it, and grants it:"}
+{"k":"cmd","t":"ratchet grant +1 --group source --reason 'greet() strips whitespace'"}
+{"k":"out","t":"granted +1 to source (4 -> 5), logged in .ratchet-grants.jsonl\ncommit .ratchet.json and .ratchet-grants.jsonl together"}
+{"k":"user","t":"I ran the grant. Commit it."}
+{"k":"tool","t":"git status && echo --- && cat .ratchet-grants.jsonl 2>/dev/null"}
+{"k":"result","t":"On branch master\nChanges to be committed:\n  (use \"git restore --staged <file>...\" to unstage)\n\tmodified:   app/greet.py\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\tmodified:   .ratchet.json\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\t.ratchet-grants.jsonl\n\n---\n{\"after\": 5, \"before\": 4, \"by\": \"Demo User\", \"lines\": 1, \"reason\": \"greet() strips whitespace\", \"target\": \"source\", \"ts\": \"2026-10-09T14:25:29Z\"}"}
+{"k":"say","t":"Grant confirmed. Committing now."}
+{"k":"tool","t":"git add app/greet.py .ratchet.json .ratchet-grants.jsonl && git commit -m \"$(cat <<'EOF'\nStrip whitespace from name in greet\n\nCo-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>\nEOF\n)\" && git status"}
+{"k":"result","t":"ratchet: ok -- source 5/5, tests 3/3\n[master 6489388] Strip whitespace from name in greet\n 3 files changed, 3 insertions(+), 1 deletion(-)\n create mode 100644 .ratchet-grants.jsonl\nOn branch master\nnothing to commit, working tree clean"}
+{"k":"say","t":"Committed as `6489388`, including the ratchet grant files."}
+{"k":"cmd","t":"ratchet check"}
+{"k":"out","t":"ratchet: ok -- source 5/5, tests 3/3"}
