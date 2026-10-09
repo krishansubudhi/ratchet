@@ -8,7 +8,7 @@ it passes. Print the summary template at the end.
 `<path>` below means the repo root the human gave you. If they didn't give
 one, ask for it before doing anything.
 
-To undo a setup later, follow [Uninstall](README.md#uninstall) in the README.
+To undo a setup later, follow [docs/uninstall.md](docs/uninstall.md).
 
 ## 1. Confirm the target is a real, clean-enough repo
 
