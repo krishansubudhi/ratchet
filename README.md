@@ -19,13 +19,25 @@ there.)
 
 ## Quickstart
 
-1. **Install:** `pipx install ratchet-size` (or `pip install ratchet-size`,
-   or `pip install -e .` from a clone).
-2. **Record today's size:** `ratchet init` -- writes `.ratchet.json`; commit it.
-   No agent? Add the git hook: `curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit`
-3. **Wire up your agent:** paste this sentence to it: *"Set up ratchet in
+Ratchet measures; a hook enforces. Without step 3, nothing is ever refused.
+
+1. **Install:** `pipx install ratchet-size` (or `pip install ratchet-size`)
+2. **Baseline:** `ratchet init` -- writes `.ratchet.json`; commit it.
+3. **Enforce:** install the git pre-commit hook:
+
+   ```sh
+   curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit
+   ```
+
+   Now any commit that grows code past the ceiling is refused.
+4. **Agent (optional):** paste this sentence to it: *"Set up ratchet in
    /path/to/repo by following
    https://github.com/krishansubudhi/ratchet/blob/main/SETUP-FOR-AGENTS.md"*
+   It teaches the agent to check before stopping, so it trims instead of
+   hitting the hook.
+
+Only code files count (`.py`, `.js`, `.ts`, `.go`, ...) -- README and docs
+edits never count.
 
 That's it. Everything past this point is detail you can come back to: what
 counts as a line, the four rules, grants, config, and per-harness

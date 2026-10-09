@@ -100,13 +100,12 @@ Check for, in `<path>`:
 | `.aider.conf.yml` | aider | add `ratchet check` to `test-cmd` ([details](integrations/other-agents.md)) |
 | `.github/workflows/` | GitHub Actions | add the workflow from [`integrations/github`](integrations/github/README.md) |
 | `.pre-commit-config.yaml` | pre-commit framework | add the `ratchet` hook ([details](integrations/pre-commit/README.md)) |
-| none of the rows above matched | — | install the plain git hook: `cp integrations/git/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit` |
+| always, in addition to any row above | git | install the plain git hook (or, if `.pre-commit-config.yaml` exists, the pre-commit framework hook from that row instead): `curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit` |
 
-A repo can match more than one row — wire all that apply. If Claude Code's
-Stop hook or the GitHub Action is already covering enforcement, you don't
-need to *also* add the plain git hook — but it's harmless redundancy if you
-do, since it's a no-op when `ratchet check` already passes. Only treat the
-last row as a true fallback (nothing else detected); otherwise skip it. For
+A repo can match more than one row — wire all that apply. The last row is
+not a fallback: ratchet itself watches nothing, and the commit hook is what
+refuses an over-budget commit, so always install it even when Claude Code's
+Stop hook or the GitHub Action is also wired. For
 every harness
 that reads instructions (Claude Code, Cursor, Codex, any `AGENTS.md`/
 `CLAUDE.md` reader), also paste the snippet from
