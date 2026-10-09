@@ -8,7 +8,10 @@ it passes. Print the summary template at the end.
 `<path>` below means the repo root the human gave you. If they didn't give
 one, ask for it before doing anything.
 
-To undo a setup later, follow [docs/uninstall.md](docs/uninstall.md).
+To undo a setup later, follow
+[docs/uninstall.md](https://github.com/krishansubudhi/ratchet/blob/main/docs/uninstall.md).
+Everything you need is in this file; links are for humans, don't go looking
+for them on disk.
 
 ## 1. Confirm the target is a real, clean-enough repo
 
@@ -90,19 +93,21 @@ own. If nothing looks out of place, say so and move on.
 If you do change the config after proposing it, re-run `ratchet init --force`
 so the ceilings match the corrected split, and show the new output again.
 
-## 4. Detect the harness(es) in use and wire the matching integration
+## 4. Wire up the agent(s)
 
-Check for, in `<path>`:
+**Wire up the agent that is running this setup first** (you know which one
+you are), even if no file for it exists yet. Then wire up any others detected
+in `<path>`:
 
 | Found | Harness | Wire |
 |---|---|---|
-| `.claude/` or `CLAUDE.md` | Claude Code | Stop hook, plus a SessionStart budget line and a PostToolUse meter — merge the JSON from [`integrations/claude-code/settings.json`](integrations/claude-code/settings.json) into `.claude/settings.json` ([details](integrations/claude-code/README.md)) |
-| `.cursor/` or `.cursorrules` | Cursor | instruction snippet ([details](integrations/other-agents.md)) |
-| `AGENTS.md` | Codex CLI or similar | instruction snippet in `AGENTS.md` ([details](integrations/other-agents.md)) |
-| `.aider.conf.yml` | aider | add `ratchet check` to `test-cmd` ([details](integrations/other-agents.md)) |
-| `.github/workflows/` | GitHub Actions | add the workflow from [`integrations/github`](integrations/github/README.md) |
-| `.pre-commit-config.yaml` | pre-commit framework | only if the human says yes to the git hook below: add the `ratchet` hook ([details](integrations/pre-commit/README.md)) |
-| none of the above | unknown | instruction snippet only, plus the instruction-only message below |
+| `.claude/` or `CLAUDE.md` | Claude Code | snippet in `CLAUDE.md`, plus a Stop hook, SessionStart budget line and PostToolUse meter: `curl -fsSL https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/claude-code/settings.json` and merge that JSON into `.claude/settings.json` |
+| `.cursor/` or `.cursorrules` | Cursor | `.cursor/rules/ratchet.mdc`: frontmatter `---`/`description: Code-size budget`/`alwaysApply: true`/`---`, then the snippet |
+| `AGENTS.md` | Codex CLI or similar | snippet in `AGENTS.md` |
+| `.aider.conf.yml` | aider | snippet in `AGENTS.md`; in `.aider.conf.yml` set `test-cmd: ratchet check` (chain an existing one: `"ratchet check && <old cmd>"`), `auto-test: true`, `read: AGENTS.md` |
+| `.github/workflows/` | GitHub Actions | `curl -fsSL https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/github/ratchet.yml -o .github/workflows/ratchet.yml` |
+| `.pre-commit-config.yaml` | pre-commit framework | only if the human says yes to the git hook below: add `- repo: https://github.com/krishansubudhi/ratchet`, `rev: v0`, `hooks: [{id: ratchet}]` under `repos:`, then `pre-commit install` |
+| anything else | no hook mechanism | snippet in whichever file that agent reads (create it if missing), plus the instruction-only message below |
 
 A repo can match more than one row — wire all that apply.
 
@@ -117,18 +122,39 @@ that row instead):
 curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit
 ```
 
-If a harness you wired has no hook mechanism (Cursor, Codex CLI, or no row
-matched), enforcement for it is the instruction snippet alone. Say so in
+If a harness you wired has no hook mechanism (Cursor, Codex CLI, or anything
+else), enforcement for it is the instruction snippet alone. Say so in
 your final message, verbatim:
 
 > enforcement for this agent is instruction-only; for a hard block, opt into
 > the git hook: `curl -o .git/hooks/pre-commit https://raw.githubusercontent.com/krishansubudhi/ratchet/main/integrations/git/pre-commit && chmod +x .git/hooks/pre-commit`
 
-For every harness that reads instructions (Claude Code, Cursor, Codex, any `AGENTS.md`/
-`CLAUDE.md` reader), also paste the snippet from
-[`integrations/any-agent.md`](integrations/any-agent.md) into the file that
-harness reads: create the file if it doesn't exist yet (e.g. `.claude/`
-present but no `CLAUDE.md`), or append to it if it already has content.
+"Snippet" above means this block, pasted verbatim into the file that harness
+reads (create the file if missing, append if it has content):
+
+```markdown
+## Code-size budget
+
+This repo has a code-size budget enforced by `ratchet`.
+
+- Run `ratchet budget` any time, including mid-task, to see current vs
+  ceiling and how much room is left -- it only measures, no tests run, so
+  it's cheap to check before you've written a lot of code rather than after.
+- Run `ratchet check` before you say a task is done. Exit 0 means OK. Exit 1
+  means refused, and the message says what grew, by how much, and how to fix it.
+- When refused, fix it yourself, in this order:
+  1. Shrink: delete dead code, reuse an existing helper instead of writing a
+     new one, simplify. Leave tests passing.
+  2. Split: if a file is over the per-file limit, move a cohesive group of
+     definitions (the message lists seams) into a new file.
+- If `ratchet check` refuses the same change a second time, stop: don't cut
+  more and resubmit a third time. Report what's over and by how much to a
+  human instead.
+- Never run `ratchet grant`, and never edit `.ratchet.json` or
+  `.ratchet-grants.jsonl`. A grant is a human decision. If the growth is truly
+  needed, stop and say what grew and why, so a human can grant it.
+- After you delete code, run `ratchet tighten` so the budget banks it.
+```
 
 **Merge, never overwrite**, any existing file: `.claude/settings.json`,
 `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.aider.conf.yml`,
@@ -138,6 +164,8 @@ file; same idea for YAML files with existing `repos:` or `test-cmd:` keys.
 
 **Verify:** re-read each file you touched and confirm the pre-existing
 content is still there, plus the new ratchet piece.
+
+Details for humans: [integrations](https://github.com/krishansubudhi/ratchet/tree/main/integrations).
 
 ## 5. Run `ratchet check` and show it passes
 

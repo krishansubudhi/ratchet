@@ -1,8 +1,8 @@
 # Integrations
 
 Back to the [README](../README.md). The easiest path: tell your agent to follow
-[SETUP-FOR-AGENTS.md](../SETUP-FOR-AGENTS.md); it detects your harness and
-wires up the right pieces.
+[SETUP-FOR-AGENTS.md](../SETUP-FOR-AGENTS.md); it is self-contained, wires up
+the agent running it first, then any other harness it detects in the repo.
 
 | Harness | How |
 |---------|-----|
