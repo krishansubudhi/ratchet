@@ -17,11 +17,12 @@ def run(repo, *args):
 
 
 def test_init_records_totals_and_oversized_files(repo, capsys):
-    repo.write("src/big.py", funcs(300))   # 600 lines
+    repo.write("src/pkg/big.py", funcs(300))   # 600 lines
+    repo.write("testing/python/fixtures.py", funcs(10))   # pytest's layout: tests
     assert run(repo, "init") == 0
     cfg = json.loads(repo.read(config.CONFIG))
-    assert cfg["ceilings"] == {"source": 701, "tests": 10}
-    assert cfg["file_ceilings"] == {"src/big.py": 600}
+    assert cfg["ceilings"] == {"source": 701, "tests": 30}
+    assert cfg["file_ceilings"] == {"src/pkg/big.py": 600}
     assert run(repo, "init") == 2   # no clobbering without --force
     assert run(repo, "init", "--force", "--slack", "5") == 0
     assert json.loads(repo.read(config.CONFIG))["ceilings"]["source"] == 706
@@ -209,8 +210,7 @@ def test_budget_lists_files_near_the_per_file_cap(repo, capsys):
 def test_budget_hook_warns_only_once_headroom_goes_negative(repo, capsys):
     run(repo, "init")
     repo.commit()
-    assert run(repo, "budget", "--hook") == 0
-    assert capsys.readouterr().err == ""
+    assert run(repo, "budget", "--hook") == 0 and capsys.readouterr().err == ""
     repo.append("src/util.py", "Y = 2\nZ = 3\n")
     assert run(repo, "budget", "--hook") == 2
     err = capsys.readouterr().err

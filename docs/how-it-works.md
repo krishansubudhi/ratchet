@@ -16,7 +16,7 @@ more -- see `CODE_EXTS` in `ratchet/measure.py`). Blank lines don't count.
 README and docs edits never count.
 
 **Source vs tests:** a file matching a test glob (`test_*`, `*_test.*`,
-`*_tests.*`, `*.test.*`, `*.spec.*`, or living under `tests/`, `test/`,
+`*_tests.*`, `*.test.*`, `*.spec.*`, or living under `tests/`, `test/`, `testing/`,
 `__tests__/`, `spec/`) is `tests`; everything else is `source`. Both groups
 are plain config in `.ratchet.json` -- edit `include`/`exclude`/`extensions`
 to carve out a different split, e.g. `"exclude": ["vendor/**", "**/*.gen.*"]`

@@ -20,7 +20,7 @@ CODE_EXTS = {
 
 TEST_GLOBS = [
     "**/test_*", "**/*_test.*", "**/*_tests.*", "**/*.test.*", "**/*.spec.*",
-    "**/tests/**", "**/test/**", "**/__tests__/**", "**/spec/**",
+    "**/tests/**", "**/test/**", "**/testing/**", "**/__tests__/**", "**/spec/**",
 ]
 
 SKIP_DIRS = {".git", ".hg", ".svn", "node_modules", "venv", ".venv", "env",
