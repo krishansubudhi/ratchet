@@ -20,6 +20,10 @@ but cannot write it.
 }
 ```
 
+`ratchet init` actually fills `tests.include` (and `source.exclude`) with the
+full set of test globs listed in [How it works](how-it-works.md#what-it-counts)
+-- the two shown above are trimmed for readability.
+
 - Globs work like gitignore: `**/` means any number of directories.
 - Each file belongs to the first group that matches it.
 - Edit `include`/`exclude`/`extensions` to change what counts, e.g.

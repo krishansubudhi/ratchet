@@ -24,7 +24,7 @@ Remove it any time: [uninstall](docs/uninstall.md).
 1. **Install:** `pip install ratchet-size` (or `pipx install ratchet-size`)
 2. **Baseline:** run `ratchet init` anywhere in the repo, and commit the
    `.ratchet.json` it writes.
-3. **Wire up your agent:** paste it this: *"Set up ratchet in /path/to/repo
+3. **Wire up your agent:** tell it: *"Set up ratchet in /path/to/repo
    by following
    https://raw.githubusercontent.com/krishansubudhi/ratchet/main/SETUP-FOR-AGENTS.md"*
 
@@ -34,7 +34,8 @@ Remove it any time: [uninstall](docs/uninstall.md).
 instead of cutting code, declines "commit it", and commits once granted
 ([cast](docs/gemini-demo.cast)).*
 
-Only code files count; docs never do. Your own commits are not blocked.
+Only code files count, split into `source` and `tests` groups; docs never
+do. Your own commits are not blocked.
 
 **Strict mode (optional):** to block your own commits too, install the
 [git pre-commit hook](docs/integrations.md#strict-mode-the-git-hook).
