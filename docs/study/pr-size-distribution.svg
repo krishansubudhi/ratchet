@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" width="680" height="380" font-family="Helvetica,Arial,sans-serif" font-size="12">
+<rect width="680" height="380" fill="white"/>
+<text x="20" y="26" font-size="15" font-weight="bold" fill="#111">How big are the PRs? Share of PRs by lines changed</text>
+<line x1="56" y1="310.0" x2="660" y2="310.0" stroke="#ddd"/>
+<text x="50" y="314.0" text-anchor="end" fill="#555">0%</text>
+<line x1="56" y1="245.0" x2="660" y2="245.0" stroke="#ddd"/>
+<text x="50" y="249.0" text-anchor="end" fill="#555">6%</text>
+<line x1="56" y1="180.0" x2="660" y2="180.0" stroke="#ddd"/>
+<text x="50" y="184.0" text-anchor="end" fill="#555">12%</text>
+<line x1="56" y1="115.0" x2="660" y2="115.0" stroke="#ddd"/>
+<text x="50" y="119.0" text-anchor="end" fill="#555">18%</text>
+<line x1="56" y1="50.0" x2="660" y2="50.0" stroke="#ddd"/>
+<text x="50" y="54.0" text-anchor="end" fill="#555">24%</text>
+<rect x="66.0" y="180.2" width="38.3" height="129.8" fill="#c2410c"/>
+<rect x="106.3" y="117.9" width="38.3" height="192.1" fill="#2563eb"/>
+<text x="106.3" y="326" text-anchor="middle" fill="#333">0-10</text>
+<rect x="166.7" y="147.3" width="38.3" height="162.7" fill="#c2410c"/>
+<rect x="207.0" y="150.0" width="38.3" height="160.0" fill="#2563eb"/>
+<text x="207.0" y="326" text-anchor="middle" fill="#333">10-30</text>
+<rect x="267.3" y="51.4" width="38.3" height="258.6" fill="#c2410c"/>
+<rect x="307.7" y="69.5" width="38.3" height="240.5" fill="#2563eb"/>
+<text x="307.7" y="326" text-anchor="middle" fill="#333">30-100</text>
+<rect x="368.0" y="76.4" width="38.3" height="233.6" fill="#c2410c"/>
+<rect x="408.3" y="82.7" width="38.3" height="227.3" fill="#2563eb"/>
+<text x="408.3" y="326" text-anchor="middle" fill="#333">100-300</text>
+<rect x="468.7" y="130.3" width="38.3" height="179.7" fill="#c2410c"/>
+<rect x="509.0" y="152.5" width="38.3" height="157.5" fill="#2563eb"/>
+<text x="509.0" y="326" text-anchor="middle" fill="#333">300-1000</text>
+<rect x="569.3" y="191.2" width="38.3" height="118.8" fill="#c2410c"/>
+<rect x="609.7" y="204.0" width="38.3" height="106.0" fill="#2563eb"/>
+<text x="609.7" y="326" text-anchor="middle" fill="#333">1000+</text>
+<text x="56" y="346" fill="#333">lines changed per PR (adds + deletes). Median: agent 98, human 78</text>
+<rect x="56" y="358" width="10" height="10" fill="#c2410c"/><text x="70" y="368" fill="#222">agent PRs (n=1085)</text>
+<rect x="214" y="358" width="10" height="10" fill="#2563eb"/><text x="228" y="368" fill="#222">human PRs (n=2126)</text>
+</svg>

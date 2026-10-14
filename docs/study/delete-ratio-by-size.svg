@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" width="680" height="380" font-family="Helvetica,Arial,sans-serif" font-size="12">
+<rect width="680" height="380" fill="white"/>
+<text x="20" y="26" font-size="15" font-weight="bold" fill="#111">Same size, same story? Median delete ratio per PR-size bin</text>
+<line x1="56" y1="310.0" x2="660" y2="310.0" stroke="#ddd"/>
+<text x="50" y="314.0" text-anchor="end" fill="#555">0.00</text>
+<line x1="56" y1="245.0" x2="660" y2="245.0" stroke="#ddd"/>
+<text x="50" y="249.0" text-anchor="end" fill="#555">0.25</text>
+<line x1="56" y1="180.0" x2="660" y2="180.0" stroke="#ddd"/>
+<text x="50" y="184.0" text-anchor="end" fill="#555">0.50</text>
+<line x1="56" y1="115.0" x2="660" y2="115.0" stroke="#ddd"/>
+<text x="50" y="119.0" text-anchor="end" fill="#555">0.75</text>
+<line x1="56" y1="50.0" x2="660" y2="50.0" stroke="#ddd"/>
+<text x="50" y="54.0" text-anchor="end" fill="#555">1.00</text>
+<rect x="68.0" y="223.3" width="36.3" height="86.7" fill="#c2410c"/>
+<text x="86.2" y="219.3" text-anchor="middle" font-size="10" fill="#333">0.33</text>
+<rect x="106.3" y="180.0" width="36.3" height="130.0" fill="#2563eb"/>
+<text x="124.5" y="176.0" text-anchor="middle" font-size="10" fill="#333">0.50</text>
+<text x="106.3" y="326" text-anchor="middle" fill="#333">0-10 lines</text>
+<text x="106.3" y="340" text-anchor="middle" font-size="10" fill="#666">n=130 / 377</text>
+<rect x="168.7" y="254.3" width="36.3" height="55.7" fill="#c2410c"/>
+<text x="186.8" y="250.3" text-anchor="middle" font-size="10" fill="#333">0.21</text>
+<rect x="207.0" y="256.9" width="36.3" height="53.1" fill="#2563eb"/>
+<text x="225.2" y="252.9" text-anchor="middle" font-size="10" fill="#333">0.20</text>
+<text x="207.0" y="326" text-anchor="middle" fill="#333">10-30 lines</text>
+<text x="207.0" y="340" text-anchor="middle" font-size="10" fill="#666">n=163 / 314</text>
+<rect x="269.3" y="286.7" width="36.3" height="23.3" fill="#c2410c"/>
+<text x="287.5" y="282.7" text-anchor="middle" font-size="10" fill="#333">0.09</text>
+<rect x="307.7" y="285.2" width="36.3" height="24.8" fill="#2563eb"/>
+<text x="325.8" y="281.2" text-anchor="middle" font-size="10" fill="#333">0.10</text>
+<text x="307.7" y="326" text-anchor="middle" fill="#333">30-100 lines</text>
+<text x="307.7" y="340" text-anchor="middle" font-size="10" fill="#666">n=259 / 472</text>
+<rect x="370.0" y="291.4" width="36.3" height="18.6" fill="#c2410c"/>
+<text x="388.2" y="287.4" text-anchor="middle" font-size="10" fill="#333">0.07</text>
+<rect x="408.3" y="277.5" width="36.3" height="32.5" fill="#2563eb"/>
+<text x="426.5" y="273.5" text-anchor="middle" font-size="10" fill="#333">0.12</text>
+<text x="408.3" y="326" text-anchor="middle" fill="#333">100-300 lines</text>
+<text x="408.3" y="340" text-anchor="middle" font-size="10" fill="#666">n=234 / 446</text>
+<rect x="470.7" y="290.9" width="36.3" height="19.1" fill="#c2410c"/>
+<text x="488.8" y="286.9" text-anchor="middle" font-size="10" fill="#333">0.07</text>
+<rect x="509.0" y="281.0" width="36.3" height="29.0" fill="#2563eb"/>
+<text x="527.2" y="277.0" text-anchor="middle" font-size="10" fill="#333">0.11</text>
+<text x="509.0" y="326" text-anchor="middle" fill="#333">300-1000 lines</text>
+<text x="509.0" y="340" text-anchor="middle" font-size="10" fill="#666">n=180 / 309</text>
+<rect x="571.3" y="287.1" width="36.3" height="22.9" fill="#c2410c"/>
+<text x="589.5" y="283.1" text-anchor="middle" font-size="10" fill="#333">0.09</text>
+<rect x="609.7" y="270.5" width="36.3" height="39.5" fill="#2563eb"/>
+<text x="627.8" y="266.5" text-anchor="middle" font-size="10" fill="#333">0.15</text>
+<text x="609.7" y="326" text-anchor="middle" fill="#333">1000-inf lines</text>
+<text x="609.7" y="340" text-anchor="middle" font-size="10" fill="#666">n=119 / 208</text>
+<rect x="56" y="358" width="10" height="10" fill="#c2410c"/><text x="70" y="368" fill="#222">agent PRs</text>
+<rect x="151" y="358" width="10" height="10" fill="#2563eb"/><text x="165" y="368" fill="#222">human PRs</text>
+<text x="316" y="368" fill="#666">n = agent / human; bins need 5+ of each</text>
+</svg>
