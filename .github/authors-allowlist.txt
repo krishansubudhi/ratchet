@@ -1,0 +1,5 @@
+# Emails allowed as author or committer on any commit. One per line; # starts a comment.
+krishan.subudhi@gmail.com
+krishansubudhi@users.noreply.github.com
+noreply@github.com
+49699333+dependabot[bot]@users.noreply.github.com

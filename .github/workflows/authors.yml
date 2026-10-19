@@ -1,0 +1,53 @@
+name: Commit authors
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  authors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check author and committer emails
+        env:
+          EVENT: ${{ github.event_name }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_SHA: ${{ github.sha }}
+          PUSH_REF: ${{ github.ref_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          ALLOWLIST: .github/authors-allowlist.txt
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = pull_request ]; then
+            range="$PR_BASE..$PR_HEAD"
+          elif [ "${PUSH_BEFORE//0/}" != "" ] && git cat-file -e "$PUSH_BEFORE^{commit}" 2>/dev/null; then
+            range="$PUSH_BEFORE..$PUSH_SHA"
+          else
+            # New branch (before is all zeros) or a force-push whose old tip is gone:
+            # check every commit not already on another remote branch.
+            others=$(git for-each-ref --format='%(refname)' refs/remotes \
+              | grep -v -e "^refs/remotes/origin/$PUSH_REF\$" -e '^refs/remotes/origin/HEAD$' || true)
+            # shellcheck disable=SC2086
+            range="$PUSH_SHA ${others:+--not $others}"
+          fi
+          echo "checking: $range"
+          allowed=$(sed -e 's/#.*//' -e 's/[[:space:]]//g' -e '/^$/d' "$ALLOWLIST" | tr 'A-Z' 'a-z')
+          bad=0
+          # shellcheck disable=SC2086
+          while IFS=' ' read -r sha author committer; do
+            for who in "author:$author" "committer:$committer"; do
+              email=${who#*:}
+              if ! printf '%s\n' "$allowed" | grep -qxF -- "$(printf '%s' "$email" | tr 'A-Z' 'a-z')"; then
+                echo "::error::commit ${sha:0:10} has a ${who%%:*} email not in $ALLOWLIST: $email"
+                bad=1
+              fi
+            done
+          done < <(git log --format='%H %ae %ce' $range)
+          exit $bad
