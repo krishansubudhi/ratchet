@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 946" width="680" height="946" font-family="Helvetica,Arial,sans-serif" font-size="12">
+<rect width="680" height="946" fill="white"/>
+<text x="20" y="26" font-size="15" font-weight="bold" fill="#111">Per repo: median delete ratio, agent vs human PRs</text>
+<text x="20" y="46" fill="#555">repos with 8+ agent and 8+ human PRs. 0 = pure additions, 1 = pure deletions</text>
+<line x1="275.0" y1="60" x2="275.0" y2="890" stroke="#ddd"/>
+<text x="275.0" y="904" text-anchor="middle" fill="#555">0.00</text>
+<line x1="366.2" y1="60" x2="366.2" y2="890" stroke="#ddd"/>
+<text x="366.2" y="904" text-anchor="middle" fill="#555">0.25</text>
+<line x1="457.5" y1="60" x2="457.5" y2="890" stroke="#ddd"/>
+<text x="457.5" y="904" text-anchor="middle" fill="#555">0.50</text>
+<line x1="548.8" y1="60" x2="548.8" y2="890" stroke="#ddd"/>
+<text x="548.8" y="904" text-anchor="middle" fill="#555">0.75</text>
+<line x1="640.0" y1="60" x2="640.0" y2="890" stroke="#ddd"/>
+<text x="640.0" y="904" text-anchor="middle" fill="#555">1.00</text>
+<line x1="330.7" y1="78" x2="457.5" y2="78" stroke="#999"/>
+<circle cx="330.7" cy="78" r="5" fill="#c2410c"/>
+<circle cx="457.5" cy="78" r="5" fill="#2563eb"/>
+<text x="263" y="82" text-anchor="end" fill="#222">PowerShell/PowerShell (13/26)</text>
+<line x1="307.8" y1="102" x2="421.1" y2="102" stroke="#999"/>
+<circle cx="307.8" cy="102" r="5" fill="#c2410c"/>
+<circle cx="421.1" cy="102" r="5" fill="#2563eb"/>
+<text x="263" y="106" text-anchor="end" fill="#222">langgenius/dify (40/80)</text>
+<line x1="365.6" y1="126" x2="431.4" y2="126" stroke="#999"/>
+<circle cx="365.6" cy="126" r="5" fill="#c2410c"/>
+<circle cx="431.4" cy="126" r="5" fill="#2563eb"/>
+<text x="263" y="130" text-anchor="end" fill="#222">nextcloud/server (38/75)</text>
+<line x1="356.5" y1="150" x2="420.2" y2="150" stroke="#999"/>
+<circle cx="356.5" cy="150" r="5" fill="#c2410c"/>
+<circle cx="420.2" cy="150" r="5" fill="#2563eb"/>
+<text x="263" y="154" text-anchor="end" fill="#222">mrdoob/three.js (17/30)</text>
+<line x1="295.0" y1="174" x2="357.3" y2="174" stroke="#999"/>
+<circle cx="295.0" cy="174" r="5" fill="#c2410c"/>
+<circle cx="357.3" cy="174" r="5" fill="#2563eb"/>
+<text x="263" y="178" text-anchor="end" fill="#222">rustdesk/rustdesk (20/36)</text>
+<line x1="284.8" y1="198" x2="345.9" y2="198" stroke="#999"/>
+<circle cx="284.8" cy="198" r="5" fill="#c2410c"/>
+<circle cx="345.9" cy="198" r="5" fill="#2563eb"/>
+<text x="263" y="202" text-anchor="end" fill="#222">microsoft/TypeScript (28/55)</text>
+<line x1="301.0" y1="222" x2="351.1" y2="222" stroke="#999"/>
+<circle cx="301.0" cy="222" r="5" fill="#c2410c"/>
+<circle cx="351.1" cy="222" r="5" fill="#2563eb"/>
+<text x="263" y="226" text-anchor="end" fill="#222">gohugoio/hugo (40/66)</text>
+<line x1="302.9" y1="246" x2="348.8" y2="246" stroke="#999"/>
+<circle cx="302.9" cy="246" r="5" fill="#c2410c"/>
+<circle cx="348.8" cy="246" r="5" fill="#2563eb"/>
+<text x="263" y="250" text-anchor="end" fill="#222">openclaw/openclaw (15/30)</text>
+<line x1="296.2" y1="270" x2="328.5" y2="270" stroke="#999"/>
+<circle cx="296.2" cy="270" r="5" fill="#c2410c"/>
+<circle cx="328.5" cy="270" r="5" fill="#2563eb"/>
+<text x="263" y="274" text-anchor="end" fill="#222">JetBrains/kotlin (37/71)</text>
+<line x1="325.7" y1="294" x2="356.1" y2="294" stroke="#999"/>
+<circle cx="325.7" cy="294" r="5" fill="#c2410c"/>
+<circle cx="356.1" cy="294" r="5" fill="#2563eb"/>
+<text x="263" y="298" text-anchor="end" fill="#222">infiniflow/ragflow (40/77)</text>
+<line x1="275.0" y1="318" x2="304.8" y2="318" stroke="#999"/>
+<circle cx="275.0" cy="318" r="5" fill="#c2410c"/>
+<circle cx="304.8" cy="318" r="5" fill="#2563eb"/>
+<text x="263" y="322" text-anchor="end" fill="#222">tensorflow/tensorflow (19/38)</text>
+<line x1="325.3" y1="342" x2="353.4" y2="342" stroke="#999"/>
+<circle cx="325.3" cy="342" r="5" fill="#c2410c"/>
+<circle cx="353.4" cy="342" r="5" fill="#2563eb"/>
+<text x="263" y="346" text-anchor="end" fill="#222">denoland/deno (40/64)</text>
+<line x1="330.6" y1="366" x2="356.6" y2="366" stroke="#999"/>
+<circle cx="330.6" cy="366" r="5" fill="#c2410c"/>
+<circle cx="356.6" cy="366" r="5" fill="#2563eb"/>
+<text x="263" y="370" text-anchor="end" fill="#222">dotnet/aspnetcore (40/80)</text>
+<line x1="307.0" y1="390" x2="328.8" y2="390" stroke="#999"/>
+<circle cx="307.0" cy="390" r="5" fill="#c2410c"/>
+<circle cx="328.8" cy="390" r="5" fill="#2563eb"/>
+<text x="263" y="394" text-anchor="end" fill="#222">filamentphp/filament (10/19)</text>
+<line x1="311.6" y1="414" x2="332.5" y2="414" stroke="#999"/>
+<circle cx="311.6" cy="414" r="5" fill="#c2410c"/>
+<circle cx="332.5" cy="414" r="5" fill="#2563eb"/>
+<text x="263" y="418" text-anchor="end" fill="#222">elastic/elasticsearch (40/79)</text>
+<line x1="366.2" y1="438" x2="384.3" y2="438" stroke="#999"/>
+<circle cx="366.2" cy="438" r="5" fill="#c2410c"/>
+<circle cx="384.3" cy="438" r="5" fill="#2563eb"/>
+<text x="263" y="442" text-anchor="end" fill="#222">electron/electron (40/73)</text>
+<line x1="315.5" y1="462" x2="333.3" y2="462" stroke="#999"/>
+<circle cx="315.5" cy="462" r="5" fill="#c2410c"/>
+<circle cx="333.3" cy="462" r="5" fill="#2563eb"/>
+<text x="263" y="466" text-anchor="end" fill="#222">Homebrew/brew (20/40)</text>
+<line x1="309.1" y1="486" x2="324.7" y2="486" stroke="#999"/>
+<circle cx="309.1" cy="486" r="5" fill="#c2410c"/>
+<circle cx="324.7" cy="486" r="5" fill="#2563eb"/>
+<text x="263" y="490" text-anchor="end" fill="#222">n8n-io/n8n (40/69)</text>
+<line x1="311.1" y1="510" x2="326.3" y2="510" stroke="#999"/>
+<circle cx="311.1" cy="510" r="5" fill="#c2410c"/>
+<circle cx="326.3" cy="510" r="5" fill="#2563eb"/>
+<text x="263" y="514" text-anchor="end" fill="#222">microsoft/vscode (40/80)</text>
+<line x1="334.7" y1="534" x2="348.0" y2="534" stroke="#999"/>
+<circle cx="334.7" cy="534" r="5" fill="#c2410c"/>
+<circle cx="348.0" cy="534" r="5" fill="#2563eb"/>
+<text x="263" y="538" text-anchor="end" fill="#222">permissionlesstech/bitchat (40/59)</text>
+<line x1="308.3" y1="558" x2="320.6" y2="558" stroke="#999"/>
+<circle cx="308.3" cy="558" r="5" fill="#c2410c"/>
+<circle cx="320.6" cy="558" r="5" fill="#2563eb"/>
+<text x="263" y="562" text-anchor="end" fill="#222">coollabsio/coolify (40/72)</text>
+<line x1="308.8" y1="582" x2="319.8" y2="582" stroke="#999"/>
+<circle cx="308.8" cy="582" r="5" fill="#c2410c"/>
+<circle cx="319.8" cy="582" r="5" fill="#2563eb"/>
+<text x="263" y="586" text-anchor="end" fill="#222">Significant-Gravitas/AutoGPT (40/53)</text>
+<line x1="286.2" y1="606" x2="295.9" y2="606" stroke="#999"/>
+<circle cx="286.2" cy="606" r="5" fill="#c2410c"/>
+<circle cx="295.9" cy="606" r="5" fill="#2563eb"/>
+<text x="263" y="610" text-anchor="end" fill="#222">laravel/framework (27/54)</text>
+<line x1="315.9" y1="630" x2="318.8" y2="630" stroke="#999"/>
+<circle cx="315.9" cy="630" r="5" fill="#c2410c"/>
+<circle cx="318.8" cy="630" r="5" fill="#2563eb"/>
+<text x="263" y="634" text-anchor="end" fill="#222">firecrawl/firecrawl (40/77)</text>
+<line x1="312.2" y1="654" x2="309.0" y2="654" stroke="#999"/>
+<circle cx="312.2" cy="654" r="5" fill="#c2410c"/>
+<circle cx="309.0" cy="654" r="5" fill="#2563eb"/>
+<text x="263" y="658" text-anchor="end" fill="#222">morluto/rea (40/77)</text>
+<line x1="299.9" y1="678" x2="295.5" y2="678" stroke="#999"/>
+<circle cx="299.9" cy="678" r="5" fill="#c2410c"/>
+<circle cx="295.5" cy="678" r="5" fill="#2563eb"/>
+<text x="263" y="682" text-anchor="end" fill="#222">ruvnet/RuView (12/15)</text>
+<line x1="307.4" y1="702" x2="299.3" y2="702" stroke="#999"/>
+<circle cx="307.4" cy="702" r="5" fill="#c2410c"/>
+<circle cx="299.3" cy="702" r="5" fill="#2563eb"/>
+<text x="263" y="706" text-anchor="end" fill="#222">JuliusBrussee/caveman (40/71)</text>
+<line x1="384.0" y1="726" x2="367.5" y2="726" stroke="#999"/>
+<circle cx="384.0" cy="726" r="5" fill="#c2410c"/>
+<circle cx="367.5" cy="726" r="5" fill="#2563eb"/>
+<text x="263" y="730" text-anchor="end" fill="#222">vercel/next.js (24/46)</text>
+<line x1="356.7" y1="750" x2="340.2" y2="750" stroke="#999"/>
+<circle cx="356.7" cy="750" r="5" fill="#c2410c"/>
+<circle cx="340.2" cy="750" r="5" fill="#2563eb"/>
+<text x="263" y="754" text-anchor="end" fill="#222">chatwoot/chatwoot (17/30)</text>
+<line x1="335.6" y1="774" x2="298.4" y2="774" stroke="#999"/>
+<circle cx="335.6" cy="774" r="5" fill="#c2410c"/>
+<circle cx="298.4" cy="774" r="5" fill="#2563eb"/>
+<text x="263" y="778" text-anchor="end" fill="#222">utmapp/UTM (8/16)</text>
+<line x1="358.4" y1="798" x2="309.8" y2="798" stroke="#999"/>
+<circle cx="358.4" cy="798" r="5" fill="#c2410c"/>
+<circle cx="309.8" cy="798" r="5" fill="#2563eb"/>
+<text x="263" y="802" text-anchor="end" fill="#222">farion1231/cc-switch (16/29)</text>
+<line x1="381.0" y1="822" x2="304.4" y2="822" stroke="#999"/>
+<circle cx="381.0" cy="822" r="5" fill="#c2410c"/>
+<circle cx="304.4" cy="822" r="5" fill="#2563eb"/>
+<text x="263" y="826" text-anchor="end" fill="#222">iOfficeAI/OfficeCLI (13/22)</text>
+<line x1="396.7" y1="846" x2="303.0" y2="846" stroke="#999"/>
+<circle cx="396.7" cy="846" r="5" fill="#c2410c"/>
+<circle cx="303.0" cy="846" r="5" fill="#2563eb"/>
+<text x="263" y="850" text-anchor="end" fill="#222">NousResearch/hermes-agent (40/79)</text>
+<line x1="449.9" y1="870" x2="287.0" y2="870" stroke="#999"/>
+<circle cx="449.9" cy="870" r="5" fill="#c2410c"/>
+<circle cx="287.0" cy="870" r="5" fill="#2563eb"/>
+<text x="263" y="874" text-anchor="end" fill="#222">addyosmani/agent-skills (11/19)</text>
+<rect x="275" y="922" width="10" height="10" fill="#c2410c"/><text x="289" y="932" fill="#222">agent</text>
+<rect x="342" y="922" width="10" height="10" fill="#2563eb"/><text x="356" y="932" fill="#222">human</text>
+<text x="20" y="932" fill="#666">(n agent / n human)</text>
+</svg>

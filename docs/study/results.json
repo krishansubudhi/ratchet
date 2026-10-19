@@ -1,0 +1,1169 @@
+{
+  "population": {
+    "repos_listed": 101,
+    "merged_2026_prs_listed": 129251,
+    "agent_flagged_prs": 3783,
+    "human_pool_prs": 105626,
+    "bot_authored_unflagged_prs": 19842
+  },
+  "n_agent": 1085,
+  "n_human": 2126,
+  "repos_with_agent_prs": 68,
+  "repos_with_both": 67,
+  "agent_prs_by_repo": {
+    "2dust/v2rayN": 1,
+    "2dust/v2rayNG": 3,
+    "Homebrew/brew": 20,
+    "JetBrains/kotlin": 37,
+    "JuliusBrussee/caveman": 40,
+    "MonitorControl/MonitorControl": 1,
+    "NationalSecurityAgency/ghidra": 1,
+    "NousResearch/hermes-agent": 40,
+    "PowerShell/PowerShell": 13,
+    "Significant-Gravitas/AutoGPT": 40,
+    "TheAlgorithms/Python": 1,
+    "addyosmani/agent-skills": 11,
+    "anomalyco/opencode": 2,
+    "axios/axios": 6,
+    "bagisto/bagisto": 2,
+    "chatwoot/chatwoot": 17,
+    "clash-verge-rev/clash-verge-rev": 2,
+    "composer/composer": 4,
+    "coollabsio/coolify": 40,
+    "denoland/deno": 40,
+    "discourse/discourse": 6,
+    "dotnet/aspnetcore": 40,
+    "elastic/elasticsearch": 40,
+    "electron/electron": 40,
+    "farion1231/cc-switch": 16,
+    "fastlane/fastlane": 2,
+    "filamentphp/filament": 10,
+    "firecrawl/firecrawl": 40,
+    "firefly-iii/firefly-iii": 1,
+    "freeCodeCamp/freeCodeCamp": 1,
+    "ggml-org/llama.cpp": 4,
+    "godotengine/godot": 1,
+    "gohugoio/hugo": 40,
+    "iOfficeAI/OfficeCLI": 13,
+    "iina/iina": 4,
+    "infiniflow/ragflow": 40,
+    "jellyfin/jellyfin": 1,
+    "kubernetes/kubernetes": 6,
+    "langgenius/dify": 40,
+    "laravel/framework": 27,
+    "microsoft/TypeScript": 28,
+    "microsoft/markitdown": 4,
+    "microsoft/vscode": 40,
+    "monicahq/monica": 1,
+    "morluto/rea": 40,
+    "mrdoob/three.js": 17,
+    "n8n-io/n8n": 40,
+    "nextcloud/server": 38,
+    "nodejs/node": 5,
+    "ollama/ollama": 2,
+    "openclaw/openclaw": 15,
+    "opencv/opencv": 7,
+    "oven-sh/bun": 5,
+    "permissionlesstech/bitchat": 40,
+    "rails/rails": 6,
+    "rapid7/metasploit-framework": 1,
+    "react/react": 3,
+    "rustdesk/rustdesk": 20,
+    "ruvnet/RuView": 12,
+    "shadowsocks/shadowsocks-android": 1,
+    "spring-projects/spring-framework": 2,
+    "swiftlang/swift": 2,
+    "symfony/symfony": 2,
+    "tensorflow/tensorflow": 19,
+    "tesseract-ocr/tesseract": 6,
+    "ultraworkers/claw-code": 4,
+    "utmapp/UTM": 8,
+    "vercel/next.js": 24
+  },
+  "human_dropped_commit_trailer": 177,
+  "label_sources": {
+    "body_claude_footer": 835,
+    "body_claude_trailer": 92,
+    "body_copilot": 114,
+    "agent_bot_login": 155,
+    "commit_claude_trailer": 727
+  },
+  "files_truncated": {
+    "agent": 23,
+    "human": 24
+  },
+  "metrics": [
+    {
+      "metric": "lines changed (adds + deletes)",
+      "key": "churn",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 98,
+      "agent_ci95": [
+        85,
+        107
+      ],
+      "human": 78.0,
+      "human_ci95": [
+        69.0,
+        87.5
+      ],
+      "diff": 20.0,
+      "diff_ci95_pr": [
+        3.0,
+        32.0
+      ],
+      "diff_ci95_repo_cluster": [
+        -9.0,
+        51.5
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "additions",
+      "key": "additions",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 81,
+      "agent_ci95": [
+        70,
+        93
+      ],
+      "human": 60.0,
+      "human_ci95": [
+        54.0,
+        66.0
+      ],
+      "diff": 21.0,
+      "diff_ci95_pr": [
+        8.5,
+        35.0
+      ],
+      "diff_ci95_repo_cluster": [
+        -0.5,
+        48.0
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "deletions",
+      "key": "deletions",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 7,
+      "agent_ci95": [
+        6,
+        8
+      ],
+      "human": 7.0,
+      "human_ci95": [
+        6.0,
+        8.0
+      ],
+      "diff": 0.0,
+      "diff_ci95_pr": [
+        -2.0,
+        1.0
+      ],
+      "diff_ci95_repo_cluster": [
+        -2,
+        2.0
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "net lines (adds - deletes)",
+      "key": "net",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 58,
+      "agent_ci95": [
+        48,
+        65
+      ],
+      "human": 35.0,
+      "human_ci95": [
+        30.0,
+        39.0
+      ],
+      "diff": 23.0,
+      "diff_ci95_pr": [
+        13.0,
+        32.0
+      ],
+      "diff_ci95_repo_cluster": [
+        3.5,
+        41.0
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "delete ratio (deletes / lines changed)",
+      "key": "delete_ratio",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 0.1016949152542373,
+      "agent_ci95": [
+        0.08833922261484099,
+        0.11627906976744186
+      ],
+      "human": 0.16,
+      "human_ci95": [
+        0.14285714285714285,
+        0.18171368861024034
+      ],
+      "diff": -0.05830508474576271,
+      "diff_ci95_pr": [
+        -0.0850278350744117,
+        -0.03516483516483515
+      ],
+      "diff_ci95_repo_cluster": [
+        -0.09606741573033709,
+        -0.02521008403361344
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "share of PRs that delete more than they add",
+      "key": "net_negative",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 0.08202764976958525,
+      "agent_ci95": [
+        0.06543778801843318,
+        0.09861751152073733
+      ],
+      "human": 0.10253998118532455,
+      "human_ci95": [
+        0.08984007525870179,
+        0.11571025399811853
+      ],
+      "diff": -0.0205123314157393,
+      "diff_ci95_pr": [
+        -0.04148809343177079,
+        0.00015823402161520284
+      ],
+      "diff_ci95_repo_cluster": [
+        -0.04400979210336051,
+        0.0035222353404171652
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "files changed",
+      "key": "changed_files",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 3,
+      "agent_ci95": [
+        3,
+        4
+      ],
+      "human": 3.0,
+      "human_ci95": [
+        3.0,
+        3.0
+      ],
+      "diff": 0.0,
+      "diff_ci95_pr": [
+        0.0,
+        1.0
+      ],
+      "diff_ci95_repo_cluster": [
+        0.0,
+        1.0
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "net lines in non-test source files",
+      "key": "src_net",
+      "n_agent": 1062,
+      "n_human": 2102,
+      "agent": 9.5,
+      "agent_ci95": [
+        7.0,
+        12.0
+      ],
+      "human": 5.0,
+      "human_ci95": [
+        4.0,
+        6.5
+      ],
+      "diff": 4.5,
+      "diff_ci95_pr": [
+        2.0,
+        8.0
+      ],
+      "diff_ci95_repo_cluster": [
+        0,
+        12.0
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "test share of additions",
+      "key": "test_add_share",
+      "n_agent": 1062,
+      "n_human": 2102,
+      "agent": 0.3318452380952381,
+      "agent_ci95": [
+        0.23076923076923078,
+        0.3900045754139513
+      ],
+      "human": 0.12903225806451613,
+      "human_ci95": [
+        0.055290496344747975,
+        0.22474747474747475
+      ],
+      "diff": 0.20281298003072196,
+      "diff_ci95_pr": [
+        0.05489537738913747,
+        0.29402132394459757
+      ],
+      "diff_ci95_repo_cluster": [
+        -0.06792506792506792,
+        0.3617216117216117
+      ],
+      "repos_in_cluster": 67
+    },
+    {
+      "metric": "share of PRs later reverted",
+      "key": "reverted",
+      "n_agent": 1085,
+      "n_human": 2126,
+      "agent": 0.0027649769585253456,
+      "agent_ci95": [
+        0.0,
+        0.0064516129032258064
+      ],
+      "human": 0.0009407337723424271,
+      "human_ci95": [
+        0.0,
+        0.0023518344308560675
+      ],
+      "diff": 0.0018242431861829186,
+      "diff_ci95_pr": [
+        -0.000959808558509739,
+        0.005510879130883379
+      ],
+      "diff_ci95_repo_cluster": [
+        -0.0012933794017274572,
+        0.005370621803975425
+      ],
+      "repos_in_cluster": 67
+    }
+  ],
+  "size_bins": [
+    {
+      "bin": "0-10",
+      "n_agent": 130,
+      "n_human": 377,
+      "delete_ratio_agent": 0.3333333333333333,
+      "delete_ratio_human": 0.5,
+      "net_agent": 1.0,
+      "net_human": 0,
+      "net_neg_agent": 0.1,
+      "net_neg_human": 0.10610079575596817
+    },
+    {
+      "bin": "10-30",
+      "n_agent": 163,
+      "n_human": 314,
+      "delete_ratio_agent": 0.21428571428571427,
+      "delete_ratio_human": 0.20416666666666666,
+      "net_agent": 8,
+      "net_human": 10.0,
+      "net_neg_agent": 0.06134969325153374,
+      "net_neg_human": 0.09554140127388536
+    },
+    {
+      "bin": "30-100",
+      "n_agent": 259,
+      "n_human": 472,
+      "delete_ratio_agent": 0.08974358974358974,
+      "delete_ratio_human": 0.09523809523809523,
+      "net_agent": 43,
+      "net_human": 38.5,
+      "net_neg_agent": 0.07722007722007722,
+      "net_neg_human": 0.08686440677966102
+    },
+    {
+      "bin": "100-300",
+      "n_agent": 234,
+      "n_human": 446,
+      "delete_ratio_agent": 0.07139823008849558,
+      "delete_ratio_human": 0.125,
+      "net_agent": 130.0,
+      "net_human": 108.0,
+      "net_neg_agent": 0.042735042735042736,
+      "net_neg_human": 0.08968609865470852
+    },
+    {
+      "bin": "300-1000",
+      "n_agent": 180,
+      "n_human": 309,
+      "delete_ratio_agent": 0.07361319864378342,
+      "delete_ratio_human": 0.11147540983606558,
+      "net_agent": 382.5,
+      "net_human": 344,
+      "net_neg_agent": 0.09444444444444444,
+      "net_neg_human": 0.11003236245954692
+    },
+    {
+      "bin": "1000-inf",
+      "n_agent": 119,
+      "n_human": 208,
+      "delete_ratio_agent": 0.08818263205013428,
+      "delete_ratio_human": 0.1517333202363786,
+      "net_agent": 1497,
+      "net_human": 1164.5,
+      "net_neg_agent": 0.15966386554621848,
+      "net_neg_human": 0.15865384615384615
+    }
+  ],
+  "size_matched": {
+    "n_pairs": 993,
+    "repos": 58,
+    "delete_ratio": {
+      "agent": 0.1,
+      "human": 0.14285714285714285,
+      "paired_diff": -0.011474469305794606,
+      "paired_diff_ci95": [
+        -0.023568483737975265,
+        0.0
+      ]
+    },
+    "delete_ratio_mean": {
+      "agent": 0.1925752885564206,
+      "human": 0.22003417298096462,
+      "paired_diff": -0.027458884424543823,
+      "paired_diff_ci95": [
+        -0.04613766777181847,
+        -0.008454921274309753
+      ]
+    },
+    "net_negative": {
+      "agent": 0.07653575025176233,
+      "human": 0.09566968781470292,
+      "paired_diff": -0.019133937562940583,
+      "paired_diff_ci95": [
+        -0.04229607250755287,
+        0.004028197381671702
+      ]
+    },
+    "net": {
+      "agent": 56,
+      "human": 46,
+      "paired_diff": 2,
+      "paired_diff_ci95": [
+        0,
+        3
+      ]
+    },
+    "net_gap_of_medians": {
+      "agent": 56,
+      "human": 46,
+      "diff": 10,
+      "diff_ci95": [
+        3,
+        18
+      ]
+    },
+    "delete_ratio_gap_of_medians": {
+      "agent": 0.1,
+      "human": 0.14285714285714285,
+      "diff": -0.042857142857142844,
+      "diff_ci95": [
+        -0.07811704834605598,
+        -0.023172905525846707
+      ]
+    },
+    "agent_median_churn": 95,
+    "human_median_churn": 94,
+    "agent_median_net": 56,
+    "human_median_net": 46
+  },
+  "per_repo": [
+    {
+      "repo": "PowerShell/PowerShell",
+      "n_agent": 13,
+      "n_human": 26,
+      "net_agent": 48,
+      "net_human": 0.0,
+      "delete_ratio_agent": 0.15254237288135594,
+      "delete_ratio_human": 0.5,
+      "churn_agent": 49,
+      "churn_human": 16.5
+    },
+    {
+      "repo": "langgenius/dify",
+      "n_agent": 40,
+      "n_human": 80,
+      "net_agent": 71.0,
+      "net_human": 20.0,
+      "delete_ratio_agent": 0.08976915772536405,
+      "delete_ratio_human": 0.40021833194394824,
+      "churn_agent": 112.5,
+      "churn_human": 149.0
+    },
+    {
+      "repo": "nextcloud/server",
+      "n_agent": 38,
+      "n_human": 75,
+      "net_agent": 4.5,
+      "net_human": 2,
+      "delete_ratio_agent": 0.248232885962691,
+      "delete_ratio_human": 0.42857142857142855,
+      "churn_agent": 13.5,
+      "churn_human": 31
+    },
+    {
+      "repo": "mrdoob/three.js",
+      "n_agent": 17,
+      "n_human": 30,
+      "net_agent": 17,
+      "net_human": 3.0,
+      "delete_ratio_agent": 0.22321428571428573,
+      "delete_ratio_human": 0.3979166666666667,
+      "churn_agent": 28,
+      "churn_human": 25.0
+    },
+    {
+      "repo": "rustdesk/rustdesk",
+      "n_agent": 20,
+      "n_human": 36,
+      "net_agent": 110.0,
+      "net_human": 8.5,
+      "delete_ratio_agent": 0.05480046269519953,
+      "delete_ratio_human": 0.2254305977710233,
+      "churn_agent": 131.0,
+      "churn_human": 12.0
+    },
+    {
+      "repo": "microsoft/TypeScript",
+      "n_agent": 28,
+      "n_human": 55,
+      "net_agent": 74.5,
+      "net_human": 86,
+      "delete_ratio_agent": 0.026733373761875887,
+      "delete_ratio_human": 0.19437939110070257,
+      "churn_agent": 103.0,
+      "churn_human": 238
+    },
+    {
+      "repo": "gohugoio/hugo",
+      "n_agent": 40,
+      "n_human": 66,
+      "net_agent": 65.0,
+      "net_human": 27.5,
+      "delete_ratio_agent": 0.07111251580278129,
+      "delete_ratio_human": 0.20846508466562252,
+      "churn_agent": 78.0,
+      "churn_human": 58.0
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "n_agent": 15,
+      "n_human": 30,
+      "net_agent": 132,
+      "net_human": 124.0,
+      "delete_ratio_agent": 0.07636000665446681,
+      "delete_ratio_human": 0.2022573166053659,
+      "churn_agent": 264,
+      "churn_human": 194.0
+    },
+    {
+      "repo": "JetBrains/kotlin",
+      "n_agent": 37,
+      "n_human": 71,
+      "net_agent": 315,
+      "net_human": 68,
+      "delete_ratio_agent": 0.05800261665939817,
+      "delete_ratio_human": 0.1464968152866242,
+      "churn_agent": 460,
+      "churn_human": 164
+    },
+    {
+      "repo": "infiniflow/ragflow",
+      "n_agent": 40,
+      "n_human": 77,
+      "net_agent": 54.0,
+      "net_human": 67,
+      "delete_ratio_agent": 0.13884430176565007,
+      "delete_ratio_human": 0.2222222222222222,
+      "churn_agent": 120.5,
+      "churn_human": 195
+    },
+    {
+      "repo": "tensorflow/tensorflow",
+      "n_agent": 19,
+      "n_human": 38,
+      "net_agent": 32,
+      "net_human": 30.0,
+      "delete_ratio_agent": 0.0,
+      "delete_ratio_human": 0.08166666666666667,
+      "churn_agent": 32,
+      "churn_human": 33.0
+    },
+    {
+      "repo": "denoland/deno",
+      "n_agent": 40,
+      "n_human": 64,
+      "net_agent": 57.5,
+      "net_human": 20.5,
+      "delete_ratio_agent": 0.13780533399800599,
+      "delete_ratio_human": 0.21478174603174605,
+      "churn_agent": 71.5,
+      "churn_human": 56.5
+    },
+    {
+      "repo": "dotnet/aspnetcore",
+      "n_agent": 40,
+      "n_human": 80,
+      "net_agent": 28.5,
+      "net_human": 9.0,
+      "delete_ratio_agent": 0.15234877734877733,
+      "delete_ratio_human": 0.22355403348554032,
+      "churn_agent": 59.5,
+      "churn_human": 65.0
+    },
+    {
+      "repo": "filamentphp/filament",
+      "n_agent": 10,
+      "n_human": 19,
+      "net_agent": 85.5,
+      "net_human": 34,
+      "delete_ratio_agent": 0.08766419189034838,
+      "delete_ratio_human": 0.14736842105263157,
+      "churn_agent": 120.0,
+      "churn_human": 66
+    },
+    {
+      "repo": "elastic/elasticsearch",
+      "n_agent": 40,
+      "n_human": 79,
+      "net_agent": 147.0,
+      "net_human": 61,
+      "delete_ratio_agent": 0.10037234384027734,
+      "delete_ratio_human": 0.15760869565217392,
+      "churn_agent": 200.0,
+      "churn_human": 120
+    },
+    {
+      "repo": "electron/electron",
+      "n_agent": 40,
+      "n_human": 73,
+      "net_agent": 8.5,
+      "net_human": 45,
+      "delete_ratio_agent": 0.25,
+      "delete_ratio_human": 0.2995744680851064,
+      "churn_agent": 79.5,
+      "churn_human": 114
+    },
+    {
+      "repo": "Homebrew/brew",
+      "n_agent": 20,
+      "n_human": 40,
+      "net_agent": 54.0,
+      "net_human": 21.0,
+      "delete_ratio_agent": 0.11093643198906356,
+      "delete_ratio_human": 0.15972562469377755,
+      "churn_agent": 97.0,
+      "churn_human": 37.0
+    },
+    {
+      "repo": "n8n-io/n8n",
+      "n_agent": 40,
+      "n_human": 69,
+      "net_agent": 193.5,
+      "net_human": 114,
+      "delete_ratio_agent": 0.09334993917627296,
+      "delete_ratio_human": 0.13602941176470587,
+      "churn_agent": 424.0,
+      "churn_human": 290
+    },
+    {
+      "repo": "microsoft/vscode",
+      "n_agent": 40,
+      "n_human": 80,
+      "net_agent": 61.5,
+      "net_human": 71.0,
+      "delete_ratio_agent": 0.09901960784313726,
+      "delete_ratio_human": 0.14064032644093066,
+      "churn_agent": 84.5,
+      "churn_human": 133.0
+    },
+    {
+      "repo": "permissionlesstech/bitchat",
+      "n_agent": 40,
+      "n_human": 59,
+      "net_agent": 147.0,
+      "net_human": 84,
+      "delete_ratio_agent": 0.16345195064190454,
+      "delete_ratio_human": 0.2,
+      "churn_agent": 418.0,
+      "churn_human": 223
+    },
+    {
+      "repo": "coollabsio/coolify",
+      "n_agent": 40,
+      "n_human": 72,
+      "net_agent": 135.0,
+      "net_human": 33.5,
+      "delete_ratio_agent": 0.09133099379513783,
+      "delete_ratio_human": 0.12506082725060827,
+      "churn_agent": 168.5,
+      "churn_human": 86.5
+    },
+    {
+      "repo": "Significant-Gravitas/AutoGPT",
+      "n_agent": 40,
+      "n_human": 53,
+      "net_agent": 550.0,
+      "net_human": 50,
+      "delete_ratio_agent": 0.09247787131819854,
+      "delete_ratio_human": 0.12280701754385964,
+      "churn_agent": 856.0,
+      "churn_human": 117
+    },
+    {
+      "repo": "laravel/framework",
+      "n_agent": 27,
+      "n_human": 54,
+      "net_agent": 78,
+      "net_human": 32.0,
+      "delete_ratio_agent": 0.03056768558951965,
+      "delete_ratio_human": 0.05714285714285714,
+      "churn_agent": 78,
+      "churn_human": 37.0
+    },
+    {
+      "repo": "firecrawl/firecrawl",
+      "n_agent": 40,
+      "n_human": 77,
+      "net_agent": 81.0,
+      "net_human": 49,
+      "delete_ratio_agent": 0.11200716845878136,
+      "delete_ratio_human": 0.12,
+      "churn_agent": 155.5,
+      "churn_human": 100
+    },
+    {
+      "repo": "morluto/rea",
+      "n_agent": 40,
+      "n_human": 77,
+      "net_agent": 63.5,
+      "net_human": 99,
+      "delete_ratio_agent": 0.10200000000000001,
+      "delete_ratio_human": 0.09302325581395349,
+      "churn_agent": 88.5,
+      "churn_human": 155
+    },
+    {
+      "repo": "ruvnet/RuView",
+      "n_agent": 12,
+      "n_human": 15,
+      "net_agent": 258.5,
+      "net_human": 1175,
+      "delete_ratio_agent": 0.06821523081446633,
+      "delete_ratio_human": 0.05625879043600562,
+      "churn_agent": 379.5,
+      "churn_human": 1555
+    },
+    {
+      "repo": "JuliusBrussee/caveman",
+      "n_agent": 40,
+      "n_human": 71,
+      "net_agent": 146.5,
+      "net_human": 53,
+      "delete_ratio_agent": 0.08866449805728743,
+      "delete_ratio_human": 0.06666666666666667,
+      "churn_agent": 255.5,
+      "churn_human": 63
+    },
+    {
+      "repo": "vercel/next.js",
+      "n_agent": 24,
+      "n_human": 46,
+      "net_agent": 6.5,
+      "net_human": 44.5,
+      "delete_ratio_agent": 0.29859484777517564,
+      "delete_ratio_human": 0.25350467289719625,
+      "churn_agent": 45.5,
+      "churn_human": 179.0
+    },
+    {
+      "repo": "chatwoot/chatwoot",
+      "n_agent": 17,
+      "n_human": 30,
+      "net_agent": 12,
+      "net_human": 21.5,
+      "delete_ratio_agent": 0.22388059701492538,
+      "delete_ratio_human": 0.17874124124124124,
+      "churn_agent": 25,
+      "churn_human": 75.5
+    },
+    {
+      "repo": "utmapp/UTM",
+      "n_agent": 8,
+      "n_human": 16,
+      "net_agent": 47.5,
+      "net_human": 49.5,
+      "delete_ratio_agent": 0.16598360655737704,
+      "delete_ratio_human": 0.0639768728004022,
+      "churn_agent": 305.0,
+      "churn_human": 57.5
+    },
+    {
+      "repo": "farion1231/cc-switch",
+      "n_agent": 16,
+      "n_human": 29,
+      "net_agent": 168.0,
+      "net_human": 51,
+      "delete_ratio_agent": 0.22862554112554112,
+      "delete_ratio_human": 0.09523809523809523,
+      "churn_agent": 279.0,
+      "churn_human": 88
+    },
+    {
+      "repo": "iOfficeAI/OfficeCLI",
+      "n_agent": 13,
+      "n_human": 22,
+      "net_agent": 76,
+      "net_human": 50.5,
+      "delete_ratio_agent": 0.2903225806451613,
+      "delete_ratio_human": 0.08063186813186814,
+      "churn_agent": 532,
+      "churn_human": 151.5
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "n_agent": 40,
+      "n_human": 79,
+      "net_agent": 6.5,
+      "net_human": 35,
+      "delete_ratio_agent": 0.3333333333333333,
+      "delete_ratio_human": 0.07684426229508197,
+      "churn_agent": 17.0,
+      "churn_human": 46
+    },
+    {
+      "repo": "addyosmani/agent-skills",
+      "n_agent": 11,
+      "n_human": 19,
+      "net_agent": 4,
+      "net_human": 43,
+      "delete_ratio_agent": 0.47912524850894633,
+      "delete_ratio_human": 0.03289473684210526,
+      "churn_agent": 10,
+      "churn_human": 68
+    }
+  ],
+  "agent_prs_by_language": {
+    "Kotlin": 41,
+    "Go": 156,
+    "Swift": 55,
+    "Java": 43,
+    "Python": 85,
+    "JavaScript": 66,
+    "TypeScript": 218,
+    "Rust": 99,
+    "C#": 68,
+    "C++": 77,
+    "PHP": 125,
+    "Ruby": 52
+  },
+  "repos_by_language": {
+    "C#": 5,
+    "Kotlin": 3,
+    "Ruby": 6,
+    "Go": 6,
+    "Swift": 5,
+    "Java": 3,
+    "Python": 4,
+    "JavaScript": 6,
+    "TypeScript": 8,
+    "PHP": 9,
+    "Rust": 7,
+    "C++": 6
+  },
+  "sensitivity": {
+    "without_top4_agent_repos": {
+      "n_agent": 925,
+      "n_human": 1851,
+      "net": {
+        "agent": 55,
+        "human": 33,
+        "diff_ci95_pr": [
+          12,
+          31
+        ]
+      },
+      "delete_ratio": {
+        "agent": 0.1076923076923077,
+        "human": 0.1814516129032258,
+        "diff_ci95_pr": [
+          -0.10069090909090908,
+          -0.045112781954887216
+        ]
+      },
+      "churn": {
+        "agent": 91,
+        "human": 81,
+        "diff_ci95_pr": [
+          -6,
+          25
+        ]
+      },
+      "size_matched": {
+        "n_pairs": 840,
+        "repos": 54,
+        "delete_ratio": {
+          "agent": 0.1,
+          "human": 0.18518518518518517,
+          "paired_diff": -0.023715106467547542,
+          "paired_diff_ci95": [
+            -0.04294761565239273,
+            -0.009230769230769223
+          ]
+        },
+        "delete_ratio_mean": {
+          "agent": 0.19501623089636344,
+          "human": 0.23712976967359922,
+          "paired_diff": -0.04211353877723552,
+          "paired_diff_ci95": [
+            -0.06280427697866435,
+            -0.02075162187170095
+          ]
+        },
+        "net_negative": {
+          "agent": 0.0761904761904762,
+          "human": 0.10952380952380952,
+          "paired_diff": -0.03333333333333333,
+          "paired_diff_ci95": [
+            -0.060714285714285714,
+            -0.005952380952380952
+          ]
+        },
+        "net": {
+          "agent": 54.5,
+          "human": 42.5,
+          "paired_diff": 2.5,
+          "paired_diff_ci95": [
+            1.5,
+            4.0
+          ]
+        },
+        "net_gap_of_medians": {
+          "agent": 54.5,
+          "human": 42.5,
+          "diff": 12.0,
+          "diff_ci95": [
+            4.5,
+            20.5
+          ]
+        },
+        "delete_ratio_gap_of_medians": {
+          "agent": 0.1,
+          "human": 0.18518518518518517,
+          "diff": -0.08518518518518517,
+          "diff_ci95": [
+            -0.10649959923241105,
+            -0.048084122119061684
+          ]
+        },
+        "agent_median_churn": 88.5,
+        "human_median_churn": 87.5,
+        "agent_median_net": 54.5,
+        "human_median_net": 42.5
+      }
+    },
+    "merged_june_onward": {
+      "n_agent": 788,
+      "n_human": 1515,
+      "net": {
+        "agent": 60.5,
+        "human": 44,
+        "diff_ci95_pr": [
+          5.0,
+          28.0
+        ]
+      },
+      "delete_ratio": {
+        "agent": 0.09748899559823929,
+        "human": 0.13829787234042554,
+        "diff_ci95_pr": [
+          -0.06336584006571563,
+          -0.015179563124768591
+        ]
+      },
+      "churn": {
+        "agent": 98.5,
+        "human": 96,
+        "diff_ci95_pr": [
+          -14.0,
+          24.0
+        ]
+      },
+      "size_matched": {
+        "n_pairs": 706,
+        "repos": 52,
+        "delete_ratio": {
+          "agent": 0.09206992377315137,
+          "human": 0.1388888888888889,
+          "paired_diff": -0.009302925419186873,
+          "paired_diff_ci95": [
+            -0.023492031621303755,
+            0.0
+          ]
+        },
+        "delete_ratio_mean": {
+          "agent": 0.1874686258296608,
+          "human": 0.21165927115520916,
+          "paired_diff": -0.024190645325548266,
+          "paired_diff_ci95": [
+            -0.04608628982674183,
+            -0.0019843111206968287
+          ]
+        },
+        "net_negative": {
+          "agent": 0.06940509915014165,
+          "human": 0.08923512747875353,
+          "paired_diff": -0.019830028328611898,
+          "paired_diff_ci95": [
+            -0.04815864022662889,
+            0.007082152974504249
+          ]
+        },
+        "net": {
+          "agent": 60.0,
+          "human": 50.0,
+          "paired_diff": 1.0,
+          "paired_diff_ci95": [
+            0.0,
+            3.0
+          ]
+        },
+        "net_gap_of_medians": {
+          "agent": 60.0,
+          "human": 50.0,
+          "diff": 10.0,
+          "diff_ci95": [
+            1.0,
+            17.0
+          ]
+        },
+        "delete_ratio_gap_of_medians": {
+          "agent": 0.09206992377315137,
+          "human": 0.1388888888888889,
+          "diff": -0.04681896511573752,
+          "diff_ci95": [
+            -0.07059784387637662,
+            -0.011915616352473193
+          ]
+        },
+        "agent_median_churn": 96.5,
+        "human_median_churn": 97.0,
+        "agent_median_net": 60.0,
+        "human_median_net": 50.0
+      }
+    },
+    "merged_before_june": {
+      "n_agent": 297,
+      "n_human": 611,
+      "net": {
+        "agent": 48,
+        "human": 15,
+        "diff_ci95_pr": [
+          15,
+          53
+        ]
+      },
+      "delete_ratio": {
+        "agent": 0.11278195488721804,
+        "human": 0.25,
+        "diff_ci95_pr": [
+          -0.17592592592592593,
+          -0.07845084409136047
+        ]
+      },
+      "churn": {
+        "agent": 89,
+        "human": 51,
+        "diff_ci95_pr": [
+          13,
+          67
+        ]
+      },
+      "size_matched": {
+        "n_pairs": 238,
+        "repos": 32,
+        "delete_ratio": {
+          "agent": 0.11064030131826741,
+          "human": 0.1824802330420308,
+          "paired_diff": -0.0040531177204153595,
+          "paired_diff_ci95": [
+            -0.043191275649304056,
+            0.0
+          ]
+        },
+        "delete_ratio_mean": {
+          "agent": 0.1982940085120148,
+          "human": 0.24017252947914625,
+          "paired_diff": -0.04187852096713154,
+          "paired_diff_ci95": [
+            -0.07913269857761959,
+            -0.0026235815260895303
+          ]
+        },
+        "net_negative": {
+          "agent": 0.08403361344537816,
+          "human": 0.09663865546218488,
+          "paired_diff": -0.012605042016806723,
+          "paired_diff_ci95": [
+            -0.058823529411764705,
+            0.03361344537815126
+          ]
+        },
+        "net": {
+          "agent": 56.0,
+          "human": 30.5,
+          "paired_diff": 2.0,
+          "paired_diff_ci95": [
+            0.0,
+            5.0
+          ]
+        },
+        "net_gap_of_medians": {
+          "agent": 56.0,
+          "human": 30.5,
+          "diff": 25.5,
+          "diff_ci95": [
+            0.5,
+            39.0
+          ]
+        },
+        "delete_ratio_gap_of_medians": {
+          "agent": 0.11064030131826741,
+          "human": 0.1824802330420308,
+          "diff": -0.07183993172376338,
+          "diff_ci95": [
+            -0.11172199388396364,
+            0.006668672282390695
+          ]
+        },
+        "agent_median_churn": 85.5,
+        "human_median_churn": 82.0,
+        "agent_median_net": 56.0,
+        "human_median_net": 30.5
+      }
+    },
+    "top4_repos": [
+      "JuliusBrussee/caveman",
+      "NousResearch/hermes-agent",
+      "Significant-Gravitas/AutoGPT",
+      "coollabsio/coolify"
+    ]
+  }
+}
