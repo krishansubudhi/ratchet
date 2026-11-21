@@ -84,6 +84,7 @@ Other wordings: [How it works](docs/how-it-works.md#refusal-wording).
 
 ## More
 
+- [Code growth, 2023 to 2026](docs/code-growth.md): line counts for 24 open-source repos; mature projects grew faster in 2026 than in 2023 to 2025.
 - [How it works / FAQ](docs/how-it-works.md): what counts, the four rules,
   `ratchet budget`, grants, refusal wording, exit codes, requirements
 - [Configuration](docs/configuration.md): `.ratchet.json`, groups, slack

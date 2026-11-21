@@ -1,2 +1,3 @@
 {"after": 764, "before": 710, "by": "chef", "lines": 54, "reason": "budget command, SessionStart/PostToolUse hooks, and near-cap detection to stop end-of-run refusal loops", "target": "source", "ts": "2026-10-07T13:53:59Z"}
 {"after": 322, "before": 289, "by": "chef", "lines": 33, "reason": "tests for ratchet budget, near_files, and the PostToolUse meter", "target": "tests", "ts": "2026-10-07T13:53:59Z"}
+{"after": 858, "before": 764, "by": "Krishan Subudhi", "lines": 94, "reason": "scripts/code_growth.py: data script for docs/code-growth.md", "target": "source", "ts": "2026-11-21T01:11:23Z"}
