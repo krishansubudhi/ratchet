@@ -9,6 +9,15 @@ control group (web frameworks, databases, CLI tools, a runtime).
 The question: have codebases been growing faster since coding agents became
 common?
 
+**Try it on your repo.** Python 3 and git, nothing to install. Swap in your
+repo's URL (any public repo, or a local path):
+
+```sh
+curl -sL https://raw.githubusercontent.com/krishansubudhi/ratchet/main/scripts/code_growth.py | python3 - https://github.com/OWNER/REPO
+```
+
+It prints one CSV row per date: repo, date, commit, files, lines.
+
 ![Source lines indexed to 2025-01-01 = 100](code-growth.svg)
 
 ## Results
@@ -100,6 +109,7 @@ newlines in every file that:
 Blank lines, comments and tests all count. Raw output for every repo and
 date, with commit hashes, is in [`code-growth-data.csv`](code-growth-data.csv).
 Rerun: `python scripts/code_growth.py https://github.com/<owner>/<repo>`.
+The chart: `python scripts/code_growth.py --svg docs/code-growth-data.csv`.
 
 ## Limits
 
