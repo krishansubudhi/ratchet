@@ -70,7 +70,7 @@ Two hooks put it in front of the agent without it having to ask:
   stays silent until a bucket's remaining headroom goes negative, then
   prints one short warning with the overage -- mid-work, not only at the end.
 
-Both ship with the Claude Code plugin; see [`hooks/hooks.json`](../hooks/hooks.json)
+Both ship with the Claude Code plugin; see [`plugin/hooks/hooks.json`](../plugin/hooks/hooks.json)
 and [integrations/claude-code](../integrations/claude-code/README.md) to wire
 them up by hand elsewhere.
 

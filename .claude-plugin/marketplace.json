@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "ratchet",
-      "source": "./",
+      "source": "./plugin",
       "description": "A code-size budget that only goes down: keeps coding agents from bloating your repo."
     }
   ]

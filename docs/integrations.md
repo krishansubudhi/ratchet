@@ -32,9 +32,9 @@ a **Stop** hook (`ratchet check --hook`, falling back to `uvx` if `ratchet`
 isn't on `PATH` yet) so Claude Code can't end a turn with the repo over
 budget -- plus a `/ratchet:setup` command that runs the
 [agent setup](../SETUP-FOR-AGENTS.md) -- install, `ratchet init`, detect your
-harness, `ratchet check` -- in the repo you're in. See
-[`.claude-plugin/`](../.claude-plugin) and [`hooks/hooks.json`](../hooks/hooks.json)
-for the manifests, or `claude plugin validate .` to check them yourself.
+harness, `ratchet check` -- in the repo you're in. The plugin lives in
+[`plugin/`](../plugin) (manifest, hooks and scripts); run
+`claude plugin validate plugin` to check it yourself.
 
 ## Gemini CLI extension
 
@@ -44,13 +44,11 @@ The same repo is a Gemini CLI extension:
 gemini extensions install https://github.com/krishansubudhi/ratchet
 ```
 
-[`gemini-extension.json`](../gemini-extension.json) is the manifest, and
-`hooks/hooks.json` is shared with the Claude Code plugin. Gemini runs the
-same three scripts on **SessionStart**, **AfterTool** (after `write_file` or
-`replace`) and **AfterAgent**, and `/ratchet:setup` comes from
-`commands/ratchet/setup.toml`. Each tool skips the other's event names:
-Gemini prints a "Skipping" warning for `PostToolUse` and `Stop` at startup,
-and Claude Code ignores `AfterTool` and `AfterAgent`.
+[`gemini-extension.json`](../gemini-extension.json) is the manifest. Its
+[`hooks/hooks.json`](../hooks/hooks.json) runs the plugin's three scripts on
+**SessionStart**, **AfterTool** (after `write_file` or `replace`) and
+**AfterAgent**, the Gemini events for the same moments, and
+`commands/ratchet/setup.toml` gives Gemini the same `/ratchet:setup`.
 
 ## Strict mode: the git hook
 
