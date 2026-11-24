@@ -35,6 +35,10 @@ Remove it any time: [uninstall](docs/uninstall.md).
 3. **Wire up your agent:** tell it: *"Set up ratchet in /path/to/repo
    by following
    https://raw.githubusercontent.com/krishansubudhi/ratchet/main/SETUP-FOR-AGENTS.md"*
+   Or install the agent plugin, which adds the hooks and `/ratchet:setup`:
+   `/plugin install ratchet --marketplace krishansubudhi/ratchet` in Claude
+   Code, `gemini extensions install https://github.com/krishansubudhi/ratchet`
+   in Gemini CLI.
 
 ![Gemini CLI implements a feature, is refused by ratchet check, asks for a grant and will not commit when told to; after the human runs ratchet grant it commits and the check passes](docs/gemini-demo.gif)
 

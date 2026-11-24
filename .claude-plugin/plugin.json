@@ -10,5 +10,19 @@
   "homepage": "https://github.com/krishansubudhi/ratchet",
   "repository": "https://github.com/krishansubudhi/ratchet",
   "license": "Apache-2.0",
-  "keywords": ["code-size", "budget", "lint", "agents", "ratchet"]
+  "keywords": [
+    "code-size",
+    "budget",
+    "lint",
+    "agents",
+    "ratchet"
+  ],
+  "network": {
+    "hosts": [
+      "pypi.org",
+      "files.pythonhosted.org",
+      "github.com",
+      "raw.githubusercontent.com"
+    ]
+  }
 }

@@ -10,6 +10,7 @@ actually did.
 | Harness | How |
 |---------|-----|
 | Claude Code | Stop hook `ratchet check --hook`: [integrations/claude-code](../integrations/claude-code/README.md), or the plugin below |
+| Gemini CLI | extension: `gemini extensions install https://github.com/krishansubudhi/ratchet`, see below |
 | Cursor, Codex CLI, aider | instruction file (+ opt-in git hook) / aider test-cmd: [integrations/other-agents.md](../integrations/other-agents.md) |
 | pre-commit (opt-in strict) | framework hook, or a plain git hook: [integrations/pre-commit](../integrations/pre-commit/README.md) |
 | GitHub Actions | `uses: krishansubudhi/ratchet@v0`: [integrations/github](../integrations/github/README.md) |
@@ -34,6 +35,22 @@ budget -- plus a `/ratchet:setup` command that runs the
 harness, `ratchet check` -- in the repo you're in. See
 [`.claude-plugin/`](../.claude-plugin) and [`hooks/hooks.json`](../hooks/hooks.json)
 for the manifests, or `claude plugin validate .` to check them yourself.
+
+## Gemini CLI extension
+
+The same repo is a Gemini CLI extension:
+
+```text
+gemini extensions install https://github.com/krishansubudhi/ratchet
+```
+
+[`gemini-extension.json`](../gemini-extension.json) is the manifest, and
+`hooks/hooks.json` is shared with the Claude Code plugin. Gemini runs the
+same three scripts on **SessionStart**, **AfterTool** (after `write_file` or
+`replace`) and **AfterAgent**, and `/ratchet:setup` comes from
+`commands/ratchet/setup.toml`. Each tool skips the other's event names:
+Gemini prints a "Skipping" warning for `PostToolUse` and `Stop` at startup,
+and Claude Code ignores `AfterTool` and `AfterAgent`.
 
 ## Strict mode: the git hook
 

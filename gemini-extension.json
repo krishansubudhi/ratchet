@@ -1,0 +1,5 @@
+{
+  "name": "ratchet",
+  "version": "0.2.3",
+  "description": "A code-size budget that only goes down: keeps coding agents from bloating your repo."
+}
